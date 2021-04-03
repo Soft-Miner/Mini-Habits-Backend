@@ -3,7 +3,7 @@ import express from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 
-import routes from '../src/routes';
+import routes from './routes';
 import { appError } from './middlewares/appError';
 
 const app = express();
