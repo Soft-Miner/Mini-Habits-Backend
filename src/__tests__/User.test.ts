@@ -1,4 +1,6 @@
+import request from 'supertest';
 import { createConnection } from 'typeorm';
+import app from '../app';
 
 describe('Users', () => {
   beforeAll(async () => {
@@ -7,7 +9,12 @@ describe('Users', () => {
     await connection.runMigrations();
   });
 
-  it('Should be here just to tests not fails', () => {
-    expect(1).toBe(1);
+  it('Should be possible to create a new user.', async () => {
+    const response = await request(app).post('/api/users').send({
+      name: 'Zequinha',
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty('user');
   });
 });
