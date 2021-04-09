@@ -8,7 +8,8 @@ interface tokenPayload {
 
 export const verifyJWT = () => {
   return (request: Request, response: Response, _next: NextFunction) => {
-    const token = request.headers['x-access-token'] as string;
+    const authorization = request.headers['authorization'];
+    const token = authorization?.split(' ')[1];
 
     if (!token) throw new AppError('Invalid token.', 401);
 
