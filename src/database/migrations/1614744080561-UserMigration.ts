@@ -23,6 +23,11 @@ export class UserMigration1614744080561 implements MigrationInterface {
           {
             name: 'email',
             type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'email_to_verify',
+            type: 'varchar',
           },
           {
             name: 'password',
@@ -31,6 +36,7 @@ export class UserMigration1614744080561 implements MigrationInterface {
           {
             name: 'last_modified',
             type: 'timestamp',
+            default: 'now()',
           },
           {
             name: 'created_at',
