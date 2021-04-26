@@ -28,14 +28,27 @@ class UserService {
       throw new AppError('A user already exists with this email.');
     }
 
-    const passwordHash = await bcrypt.hash(password, 10);
+    let user: User;
 
-    const user = this.repository.create({
-      name,
-      lastname,
-      password: passwordHash,
+    const userWithThisEmailToVerify = await this.repository.findOne({
       email_to_verify: email,
     });
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    if (userWithThisEmailToVerify) {
+      user = userWithThisEmailToVerify;
+      user.name = name;
+      user.lastname = lastname;
+      user.password = passwordHash;
+    } else {
+      user = this.repository.create({
+        name,
+        lastname,
+        password: passwordHash,
+        email_to_verify: email,
+      });
+    }
 
     await this.repository.save(user);
 
