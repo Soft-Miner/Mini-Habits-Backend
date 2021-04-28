@@ -6,7 +6,7 @@ const routes = Router();
 const usersController = new UsersController();
 
 routes.post('/register', usersController.create);
-routes.post('/recover-password', usersController.requestNewPassword);
+routes.post('/request-password', usersController.requestNewPassword);
 routes.post('/new-password', usersController.newPassword);
 
 export default routes;

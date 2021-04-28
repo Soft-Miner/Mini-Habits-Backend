@@ -1,15 +1,12 @@
 import request from 'supertest';
-import { Connection, createConnection, getRepository } from 'typeorm';
+import { Connection, createConnection } from 'typeorm';
 import app from '../../app';
 import User from '../../models/User';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const mockSendEmail = jest.fn((args) => ({
-  messageId: '',
-}));
+const mockSendEmail = jest.fn();
 
 jest.mock('../../services/SendMailService.ts', () => ({
-  execute: (args: Record<string, unknown>) => mockSendEmail(args),
+  execute: () => mockSendEmail(),
 }));
 
 const populateDatabase = async (connection: Connection) => {
@@ -24,7 +21,7 @@ const populateDatabase = async (connection: Connection) => {
   await usersRepository.save(user);
 };
 
-describe('Users', () => {
+describe('Create new users', () => {
   beforeAll(async () => {
     const connection = await createConnection();
     await connection.dropDatabase();

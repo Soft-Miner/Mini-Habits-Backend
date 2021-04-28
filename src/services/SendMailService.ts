@@ -1,4 +1,9 @@
-import { Transporter, createTransport } from 'nodemailer';
+import {
+  Transporter,
+  createTransport,
+  getTestMessageUrl,
+  createTestAccount,
+} from 'nodemailer';
 import handlebars from 'handlebars';
 import fs from 'fs';
 
@@ -53,7 +58,7 @@ class SendMailService {
       from: 'minihabitos@gmail.com',
     });
 
-    // console.log('Message sent. Preview URL: %s', getTestMessageUrl(message));
+    //console.log('Message sent. Preview URL: %s', getTestMessageUrl(message));
   }
 }
 

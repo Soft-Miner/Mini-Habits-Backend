@@ -73,9 +73,10 @@ class UsersController {
   }
 
   async newPassword(request: Request, response: Response, _next: NextFunction) {
-    const { requestSecret, password } = request.body;
+    const { requestId, requestSecret, password } = request.body;
 
     const schema = yup.object().shape({
+      requestId: yup.string().required(),
       requestSecret: yup.string().required(),
       password: yup.string().required(),
     });
@@ -83,11 +84,13 @@ class UsersController {
     try {
       await schema.validate(request.body);
     } catch (error) {
-      return _next(new AppError('requestSecret and password are required.'));
+      return _next(
+        new AppError('requestId, requestSecret and password are required.')
+      );
     }
 
     try {
-      await new UserService().newPassword(requestSecret, password);
+      await new UserService().newPassword(requestId, requestSecret, password);
 
       return response.status(200).json({
         message: `Password successfully updated.`,

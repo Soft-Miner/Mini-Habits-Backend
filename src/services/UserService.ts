@@ -1,9 +1,8 @@
-import { getRepository, Repository } from 'typeorm';
+import { getManager, getRepository, Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { resolve } from 'path';
 import jwt from 'jsonwebtoken';
 import { v4 as uuid } from 'uuid';
-
 import User from '../models/User';
 import { AppError } from '../errors/AppError';
 import PasswordResetRequest from '../models/PasswordResetRequest';
@@ -93,6 +92,7 @@ class UserService {
 
     if (resetRequestFromThisUser) {
       resetRequest = resetRequestFromThisUser;
+      resetRequest.request_secret = requestSecretHash;
     } else {
       resetRequest = resetRequestsRepository.create({
         request_secret: requestSecretHash,
@@ -107,20 +107,31 @@ class UserService {
       subject: 'Recupere sua senha',
       variables: {
         name: user.name,
-        link: `https://mini-habitos.soft-miner.com/redefinir-senha/${requestSecret}`,
+        link: `https://mini-habitos.soft-miner.com/redefinir-senha/${resetRequest.id}/${requestSecret}`,
       },
       path: resolve(__dirname, '../views/emails/recoverPassword.hbs'),
     });
   }
 
-  async newPassword(requestSecret: string, password: string): Promise<void> {
+  async newPassword(
+    requestId: string,
+    requestSecret: string,
+    password: string
+  ): Promise<void> {
     const resetRequestsRepository = getRepository(PasswordResetRequest);
 
-    const resetRequest = await resetRequestsRepository.findOne({
-      request_secret: requestSecret,
-    });
+    const resetRequest = await resetRequestsRepository.findOne(requestId);
 
     if (!resetRequest) {
+      throw new AppError('requestId not found.', 404);
+    }
+
+    const validRequestSecret = await bcrypt.compare(
+      requestSecret,
+      resetRequest.request_secret
+    );
+
+    if (!validRequestSecret) {
       throw new AppError('Invalid requestSecret.', 401);
     }
 
@@ -134,7 +145,10 @@ class UserService {
 
     user.password = passwordHash;
 
-    await this.repository.save(user);
+    await getManager().transaction(async (transactionalEntityManager) => {
+      await transactionalEntityManager.save(user);
+      await transactionalEntityManager.remove(resetRequest);
+    });
   }
 }
 

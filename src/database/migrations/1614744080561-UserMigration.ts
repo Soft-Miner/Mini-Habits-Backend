@@ -28,6 +28,7 @@ export class UserMigration1614744080561 implements MigrationInterface {
           {
             name: 'email_to_verify',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'password',
