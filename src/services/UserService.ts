@@ -100,7 +100,7 @@ class UserService {
       });
     }
 
-    resetRequestsRepository.save(resetRequest);
+    await resetRequestsRepository.save(resetRequest);
 
     await SendMailService.execute({
       to: email,

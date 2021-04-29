@@ -58,7 +58,7 @@ class SendMailService {
       from: 'minihabitos@gmail.com',
     });
 
-    //console.log('Message sent. Preview URL: %s', getTestMessageUrl(message));
+    // console.log('Message sent. Preview URL: %s', getTestMessageUrl(message));
   }
 }
 

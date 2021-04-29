@@ -93,7 +93,7 @@ class UsersController {
       await new UserService().newPassword(requestId, requestSecret, password);
 
       return response.status(200).json({
-        message: `Password successfully updated.`,
+        message: 'Password successfully updated.',
       });
     } catch (err) {
       return _next(err);
