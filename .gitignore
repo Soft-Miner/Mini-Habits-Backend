@@ -1,6 +1,8 @@
 node_modules/
 dist/
 
+coverage/
+
 src/database/test/database.test.sqlite
 src/database/database.local.sqlite
 
