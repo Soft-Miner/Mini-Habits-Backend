@@ -6,6 +6,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import Habit from './Habit';
@@ -52,7 +53,7 @@ class HabitChallenge {
   @Column()
   xp_reward: number;
 
-  @Column()
+  @UpdateDateColumn()
   last_modified: Date;
 
   @CreateDateColumn()

@@ -4,6 +4,7 @@ import {
   Entity,
   OneToMany,
   PrimaryColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import HabitUser from './HabitUser';
@@ -25,12 +26,15 @@ class User {
   lastname: string;
 
   @Column()
-  email: string;
+  email?: string;
+
+  @Column()
+  email_to_verify: string;
 
   @Column()
   password: string;
 
-  @Column()
+  @UpdateDateColumn()
   last_modified: Date;
 
   @CreateDateColumn()

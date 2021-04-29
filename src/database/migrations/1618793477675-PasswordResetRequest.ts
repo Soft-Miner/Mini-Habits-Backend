@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class HabitsChallenges1615161318806 implements MigrationInterface {
+export class PasswordResetRequest1618793477675 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'habits_challenges',
+        name: 'password_reset_requests',
         columns: [
           {
             name: 'id',
@@ -13,29 +13,12 @@ export class HabitsChallenges1615161318806 implements MigrationInterface {
             generationStrategy: 'uuid',
           },
           {
-            name: 'habits_id',
+            name: 'user_id',
             type: 'varchar',
           },
           {
-            name: 'level',
-            type: 'int',
-          },
-          {
-            name: 'description',
+            name: 'request_secret',
             type: 'varchar',
-          },
-          {
-            name: 'time',
-            type: 'int',
-          },
-          {
-            name: 'xp_reward',
-            type: 'int',
-          },
-          {
-            name: 'last_modified',
-            type: 'timestamp',
-            default: 'now()',
           },
           {
             name: 'created_at',
@@ -45,10 +28,10 @@ export class HabitsChallenges1615161318806 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: 'FKHabit',
-            referencedTableName: 'habits',
+            name: 'FKUser',
+            referencedTableName: 'users',
             referencedColumnNames: ['id'],
-            columnNames: ['habits_id'],
+            columnNames: ['user_id'],
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
           },
@@ -58,6 +41,6 @@ export class HabitsChallenges1615161318806 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('habits_challenges');
+    await queryRunner.dropTable('password_reset_requests');
   }
 }
