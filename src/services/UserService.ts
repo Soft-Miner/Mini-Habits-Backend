@@ -8,6 +8,10 @@ import { AppError } from '../errors/AppError';
 import PasswordResetRequest from '../models/PasswordResetRequest';
 import SendMailService from './SendMailService';
 
+interface TokenPayload {
+  id: string;
+}
+
 class UserService {
   private repository: Repository<User>;
 
@@ -54,7 +58,6 @@ class UserService {
     const token = jwt.sign(
       {
         id: user.id,
-        email: user.email,
       },
       process.env.JWT_SECRET as string
     );
@@ -113,6 +116,35 @@ class UserService {
     });
   }
 
+  async verifyEmail(token: string) {
+    let decodedToken: TokenPayload;
+    try {
+      decodedToken = jwt.verify(
+        token,
+        process.env.JWT_SECRET as string
+      ) as TokenPayload;
+    } catch (error) {
+      throw new AppError('Invalid token.', 401);
+    }
+
+    const userId = decodedToken.id;
+
+    const user = await this.repository.findOne(userId);
+
+    if (!user) {
+      throw new AppError('User not found.', 404);
+    }
+
+    if (!user.email_to_verify) {
+      throw new AppError('This email was already verified.');
+    }
+
+    user.email = user.email_to_verify;
+    user.email_to_verify = null;
+
+    await this.repository.save(user);
+  }
+
   async newPassword(
     requestId: string,
     requestSecret: string,
@@ -135,11 +167,7 @@ class UserService {
       throw new AppError('Invalid requestSecret.', 401);
     }
 
-    const user = await this.repository.findOne(resetRequest.user_id);
-
-    if (!user) {
-      throw new AppError('User not found.', 404);
-    }
+    const user = (await this.repository.findOne(resetRequest.user_id)) as User;
 
     const passwordHash = await bcrypt.hash(password, 10);
 
