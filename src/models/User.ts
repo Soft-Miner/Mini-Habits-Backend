@@ -25,11 +25,11 @@ class User {
   @Column()
   lastname: string;
 
-  @Column()
-  email?: string;
+  @Column({ type: 'varchar' })
+  email?: string | null;
 
-  @Column()
-  email_to_verify: string;
+  @Column({ type: 'varchar' })
+  email_to_verify?: string | null;
 
   @Column()
   password: string;

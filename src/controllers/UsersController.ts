@@ -39,8 +39,8 @@ class UsersController {
           created_at: user.created_at,
         },
       });
-    } catch (err) {
-      return _next(err);
+    } catch (error) {
+      return _next(error);
     }
   }
 
@@ -67,8 +67,26 @@ class UsersController {
       return response.status(200).json({
         message: `Password recovery email sent to ${email}.`,
       });
-    } catch (err) {
-      return _next(err);
+    } catch (error) {
+      return _next(error);
+    }
+  }
+
+  async verifyEmail(request: Request, response: Response, _next: NextFunction) {
+    const { token } = request.body;
+
+    if (!token) {
+      return _next(new AppError('Invalid token.', 401));
+    }
+
+    try {
+      await new UserService().verifyEmail(token);
+
+      return response.status(200).json({
+        message: 'Email successfully verified.',
+      });
+    } catch (error) {
+      return _next(error);
     }
   }
 
@@ -95,8 +113,8 @@ class UsersController {
       return response.status(200).json({
         message: 'Password successfully updated.',
       });
-    } catch (err) {
-      return _next(err);
+    } catch (error) {
+      return _next(error);
     }
   }
 }
