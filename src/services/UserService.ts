@@ -69,7 +69,7 @@ class UserService {
         name,
         link: `https://mini-habitos.soft-miner.com/verificar-email/${token}`,
       },
-      path: resolve(__dirname, '../views/emails/confirmEmail.hbs'),
+      path: resolve(__dirname, '../../views/emails/confirmEmail.hbs'),
     });
 
     return user;
@@ -112,7 +112,7 @@ class UserService {
         name: user.name,
         link: `https://mini-habitos.soft-miner.com/redefinir-senha/${resetRequest.id}/${requestSecret}`,
       },
-      path: resolve(__dirname, '../views/emails/recoverPassword.hbs'),
+      path: resolve(__dirname, '../../views/emails/recoverPassword.hbs'),
     });
   }
 
