@@ -42,7 +42,7 @@ describe('Verify Email', () => {
     await populateDatabase(connection);
   });
 
-  it('token inválido', async () => {
+  it('should return error if an invalid token is sent', async () => {
     const emptyTokenResponse = await request(app)
       .post('/api/verify-email')
       .send({
@@ -60,7 +60,7 @@ describe('Verify Email', () => {
     expect(invalidTokenResponse.body.message).toBe('Invalid token.');
   });
 
-  it('usuário não encontrado', async () => {
+  it('should return an error if the user does not exist', async () => {
     const response = await request(app).post('/api/verify-email').send({
       token: tokenWithUserIdNonExistent,
     });
@@ -69,7 +69,7 @@ describe('Verify Email', () => {
     expect(response.body.message).toBe('User not found.');
   });
 
-  it('sucesso', async () => {
+  it('should be possible to verify the email', async () => {
     const response = await request(app).post('/api/verify-email').send({
       token,
     });
@@ -78,7 +78,7 @@ describe('Verify Email', () => {
     expect(response.body.message).toBe('Email successfully verified.');
   });
 
-  it('email já verificado', async () => {
+  it('should return an error if the email has already been verified', async () => {
     const response = await request(app).post('/api/verify-email').send({
       token,
     });
