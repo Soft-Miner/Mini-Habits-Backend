@@ -12,7 +12,7 @@ interface TokenPayload {
   id: string;
 }
 
-class UserService {
+class UsersService {
   private repository: Repository<User>;
 
   constructor() {
@@ -180,4 +180,4 @@ class UserService {
   }
 }
 
-export default UserService;
+export default UsersService;
