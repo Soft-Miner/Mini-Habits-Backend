@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import * as yup from 'yup';
 
 import { AppError } from '../errors/AppError';
-import UserService from '../services/UserService';
+import UsersService from '../services/UsersService';
 
 class UsersController {
   async create(request: Request, response: Response, _next: NextFunction) {
@@ -22,7 +22,7 @@ class UsersController {
     }
 
     try {
-      const user = await new UserService().create(
+      const user = await new UsersService().create(
         name,
         lastname,
         email,
@@ -62,7 +62,7 @@ class UsersController {
     }
 
     try {
-      await new UserService().requestNewPassword(email);
+      await new UsersService().requestNewPassword(email);
 
       return response.status(200).json({
         message: `Password recovery email sent to ${email}.`,
@@ -80,7 +80,7 @@ class UsersController {
     }
 
     try {
-      await new UserService().verifyEmail(token);
+      await new UsersService().verifyEmail(token);
 
       return response.status(200).json({
         message: 'Email successfully verified.',
@@ -108,7 +108,7 @@ class UsersController {
     }
 
     try {
-      await new UserService().newPassword(requestId, requestSecret, password);
+      await new UsersService().newPassword(requestId, requestSecret, password);
 
       return response.status(200).json({
         message: 'Password successfully updated.',
