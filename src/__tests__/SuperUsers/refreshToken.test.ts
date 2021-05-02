@@ -36,7 +36,7 @@ const getRefreshToken = async () => {
   refresh_token = response.body.refresh_token;
 };
 
-describe('SuperUser authenticate', () => {
+describe('SuperUser refreshToken', () => {
   beforeAll(async () => {
     const connection = await createConnection();
     await connection.dropDatabase();
