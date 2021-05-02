@@ -17,6 +17,7 @@ Retorna um token de acesso.
 - **Data Params**
 
   `email: string`
+
   `password: string`
 
 </br>

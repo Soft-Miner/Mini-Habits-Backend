@@ -17,7 +17,9 @@ Altera a senha do usuário.
 - **Data Params**
 
   `requestId: string`
+
   `requestSecret: string`
+
   `password: string`
 
 </br>
