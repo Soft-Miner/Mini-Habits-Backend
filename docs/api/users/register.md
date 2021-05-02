@@ -17,8 +17,11 @@ Cadastra um novo usuário.
 - **Data Params**
 
   `name: string`
+
   `lastname: string`
+
   `email: string`
+
   `password: string`
 
 </br>
