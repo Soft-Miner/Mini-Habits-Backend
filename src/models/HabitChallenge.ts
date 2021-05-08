@@ -48,7 +48,7 @@ class HabitChallenge {
   description: string;
 
   @Column()
-  time: number;
+  icon: string;
 
   @Column()
   xp_reward: number;
