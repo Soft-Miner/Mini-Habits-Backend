@@ -42,7 +42,7 @@ class HabitsController {
 
     const schemaChallenges = yup.array().of(
       yup.object().shape({
-        level: yup.number().positive().required(),
+        level: yup.number().min(0).required(),
         description: yup.string().required(),
         xp_reward: yup.number().positive().required(),
       })
@@ -63,7 +63,7 @@ class HabitsController {
     }
     if (challengesIcons.length !== challengesParsed.length) {
       return _next(
-        new AppError('ChallengesIcon and challenges must have the same lenght.')
+        new AppError('ChallengesIcon and challenges must have the same length.')
       );
     }
 

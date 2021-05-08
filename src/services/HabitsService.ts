@@ -16,6 +16,14 @@ class HabitsService {
     challenges: HabitChallenge[],
     icon: string
   ) {
+    const existChallengWithZero = challenges.find((challenge) => {
+      return challenge.level === 0;
+    });
+
+    if (!existChallengWithZero) {
+      throw new AppError('At least one challenge must be level 0.');
+    }
+
     const habitAlreadyExists = await this.repository.findOne({ name });
 
     if (habitAlreadyExists) {
