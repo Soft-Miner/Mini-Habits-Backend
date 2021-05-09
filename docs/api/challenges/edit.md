@@ -4,7 +4,7 @@ Edita um challenge.
 
 - **URL**
 
-  /api/challenges
+  /api/challenges/{id}
 
 </br>
 
