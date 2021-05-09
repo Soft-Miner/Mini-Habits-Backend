@@ -42,11 +42,14 @@ Adiciona um novo desafio no mini-hábito.
 
     ```json
     {
-      "id": "8d17abb3-e34e-44b8-abf9-8ea59742cef2",
-      "description": "Descrição",
-      "level": "10",
-      "xp_reward": "12",
-      "icon": "path/to/icon.svg"
+      "message": "Challenge successfully created.",
+      "challenge": {
+        "id": "1ac27320-fd0a-4a78-bb40-2ff6ac06ebb3",
+        "description": "Descrição",
+        "level": 10,
+        "xp_reward": 12,
+        "icon": "C:\\Users\\rodri\\Documents\\Repositorios\\MiniHabits\\mini-habits-backend\\tmp\\uploads\\155215fe03c18d9dc81e3f0b1c8fb819-Mini-Habits.svg"
+      }
     }
     ```
 
