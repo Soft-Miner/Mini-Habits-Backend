@@ -32,8 +32,9 @@ class SuperUsersService {
     const access_token = jwt.sign(
       {
         id: superUser.id,
+        typ: 'access',
       },
-      process.env.JWT_SECRET as string,
+      process.env.JWT_SECRET_ADMIN as string,
       {
         jwtid: uuid(),
         expiresIn: 60 * 5, // 5 minutes
@@ -43,8 +44,9 @@ class SuperUsersService {
     const refresh_token = jwt.sign(
       {
         id: superUser.id,
+        typ: 'refresh',
       },
-      process.env.JWT_SECRET as string,
+      process.env.JWT_SECRET_ADMIN as string,
       {
         jwtid: uuid(),
         expiresIn: '1d', // 1 day
@@ -68,7 +70,7 @@ class SuperUsersService {
     try {
       decodedToken = jwt.verify(
         refresh_token,
-        process.env.JWT_SECRET as string
+        process.env.JWT_SECRET_ADMIN as string
       ) as RefreshToken;
     } catch (error) {
       throw new AppError('Invalid refresh_token.');
@@ -93,7 +95,7 @@ class SuperUsersService {
       {
         id: superUser.id,
       },
-      process.env.JWT_SECRET as string,
+      process.env.JWT_SECRET_ADMIN as string,
       {
         jwtid: uuid(),
         expiresIn: 60 * 5, // 5 minutes
@@ -104,7 +106,7 @@ class SuperUsersService {
       {
         id: superUser.id,
       },
-      process.env.JWT_SECRET as string,
+      process.env.JWT_SECRET_ADMIN as string,
       {
         jwtid: uuid(),
         expiresIn: '1d', // 1 day
