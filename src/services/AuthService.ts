@@ -15,13 +15,13 @@ class AuthService {
     const user = await this.repository.findOne({ email });
 
     if (!user) {
-      throw new AppError('Email or password is incorrect.');
+      throw new AppError('Email or password is incorrect.', 401);
     }
 
     const passwordIsValid = await bcrypt.compare(password, user.password);
 
     if (!passwordIsValid) {
-      throw new AppError('Email or password is incorrect.');
+      throw new AppError('Email or password is incorrect.', 401);
     }
 
     const token = jwt.sign(

@@ -34,6 +34,6 @@ Retorna um token de acesso.
 
 - **Error Response:**
 
-  - **Code:** 400 BAD REQUEST
+  - **Code:** 401 UNAUTHORIZED
 
     **Content:** `{ "message": "Email or password is incorrect." }`

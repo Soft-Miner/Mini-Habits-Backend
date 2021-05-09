@@ -19,7 +19,7 @@ class AuthController {
     try {
       await schema.validate(request.body);
     } catch (error) {
-      return _next(new AppError('Email or password is incorrect.'));
+      return _next(new AppError('Email or password is incorrect.', 401));
     }
 
     try {

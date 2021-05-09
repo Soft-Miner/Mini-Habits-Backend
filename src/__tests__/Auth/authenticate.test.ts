@@ -48,11 +48,11 @@ describe('Auth', () => {
         password: 'wrong-password',
       });
 
-    expect(responseWithWrongEmail.status).toBe(400);
+    expect(responseWithWrongEmail.status).toBe(401);
     expect(responseWithWrongEmail.body.message).toBe(
       'Email or password is incorrect.'
     );
-    expect(responseWithWrongPassword.status).toBe(400);
+    expect(responseWithWrongPassword.status).toBe(401);
     expect(responseWithWrongPassword.body.message).toBe(
       'Email or password is incorrect.'
     );
@@ -72,11 +72,11 @@ describe('Auth', () => {
         password: '',
       });
 
-    expect(responseWithWrongEmail.status).toBe(400);
+    expect(responseWithWrongEmail.status).toBe(401);
     expect(responseWithWrongEmail.body.message).toBe(
       'Email or password is incorrect.'
     );
-    expect(responseWithWrongPassword.status).toBe(400);
+    expect(responseWithWrongPassword.status).toBe(401);
     expect(responseWithWrongPassword.body.message).toBe(
       'Email or password is incorrect.'
     );

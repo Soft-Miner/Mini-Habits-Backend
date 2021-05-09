@@ -41,6 +41,6 @@ Retorna um access_token e refresh_token para o admin.
 
 - **Error Response:**
 
-  - **Code:** 400 BAD REQUEST
+  - **Code:** 401 UNAUTHORIZED
 
     **Content:** `{ "message": "Email or password is incorrect." }`

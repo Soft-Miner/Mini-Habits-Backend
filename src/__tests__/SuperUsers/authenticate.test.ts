@@ -38,11 +38,11 @@ describe('SuperUser authenticate', () => {
         password: 'wrong-password',
       });
 
-    expect(responseWithWrongEmail.status).toBe(400);
+    expect(responseWithWrongEmail.status).toBe(401);
     expect(responseWithWrongEmail.body.message).toBe(
       'Email or password is incorrect.'
     );
-    expect(responseWithWrongPassword.status).toBe(400);
+    expect(responseWithWrongPassword.status).toBe(401);
     expect(responseWithWrongPassword.body.message).toBe(
       'Email or password is incorrect.'
     );
@@ -70,17 +70,17 @@ describe('SuperUser authenticate', () => {
         password: '',
       });
 
-    expect(responseWithNonExistentEmail.status).toBe(400);
+    expect(responseWithNonExistentEmail.status).toBe(401);
     expect(responseWithNonExistentEmail.body.message).toBe(
       'Email or password is incorrect.'
     );
 
-    expect(responseWithNullEmail.status).toBe(400);
+    expect(responseWithNullEmail.status).toBe(401);
     expect(responseWithNullEmail.body.message).toBe(
       'Email or password is incorrect.'
     );
 
-    expect(responseWithNullPassword.status).toBe(400);
+    expect(responseWithNullPassword.status).toBe(401);
     expect(responseWithNullPassword.body.message).toBe(
       'Email or password is incorrect.'
     );
