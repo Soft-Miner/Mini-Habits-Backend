@@ -10,7 +10,7 @@ Adiciona um novo desafio no mini-hábito.
 
 - **Method:**
 
-  `PUT`
+  `POST`
 
 </br>
 
