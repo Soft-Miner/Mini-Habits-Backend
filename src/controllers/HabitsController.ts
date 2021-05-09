@@ -5,8 +5,8 @@ import HabitChallenge from '../models/HabitChallenge';
 import HabitsService from '../services/HabitsService';
 
 interface HabitFiles {
-  challengesIcons: Express.Multer.File[];
-  icon: Express.Multer.File[];
+  challengesIcons?: Express.Multer.File[];
+  icon?: Express.Multer.File[];
 }
 
 interface Challenge {
@@ -88,6 +88,52 @@ class HabitsController {
       return response.status(201).json({
         message: 'Habit successfully created.',
         habit,
+      });
+    } catch (error) {
+      return _next(error);
+    }
+  }
+
+  async addChallenge(
+    request: Request,
+    response: Response,
+    _next: NextFunction
+  ) {
+    const { description, xp_reward, level } = request.body;
+    const { id } = request.params;
+    const icon = request.file;
+
+    if (!icon) {
+      return _next(new AppError('Some field is missing.'));
+    }
+
+    const schema = yup.object().shape({
+      xp_reward: yup.string().required(),
+      description: yup.string().required(),
+      level: yup.string().required(),
+    });
+
+    try {
+      await schema.validate(request.body);
+    } catch {
+      return _next(new AppError('Some field is missing.'));
+    }
+
+    try {
+      const challenge = new HabitChallenge();
+      challenge.description = description;
+      challenge.level = Number(level);
+      challenge.xp_reward = Number(xp_reward);
+      challenge.icon = icon.path;
+
+      const challengeSaved = await new HabitsService().addChallenge(
+        id,
+        challenge
+      );
+
+      return response.status(201).json({
+        message: 'Challenge successfully created.',
+        challenge: challengeSaved,
       });
     } catch (error) {
       return _next(error);

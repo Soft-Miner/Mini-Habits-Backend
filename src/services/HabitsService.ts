@@ -41,6 +41,22 @@ class HabitsService {
 
     return habit;
   }
+
+  async addChallenge(habitId: string, challenge: HabitChallenge) {
+    const habit = await this.repository.findOne(habitId, {
+      relations: ['challenges'],
+    });
+
+    if (!habit) {
+      throw new AppError('Habit not found.', 404);
+    }
+
+    habit.challenges.push(challenge);
+
+    this.repository.save(habit);
+
+    return challenge;
+  }
 }
 
 export default HabitsService;
