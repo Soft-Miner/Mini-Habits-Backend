@@ -86,7 +86,7 @@ describe('Create habits', () => {
     return server && server.close(done);
   });
 
-  it('deveria ser possível adicionar um novo desafio', async () => {
+  it('should be possible to add a new challenge', async () => {
     const response = await agent
       .post(`/api/habits/${habitId}/challenges`)
       .set('authorization', `Bearer ${accessToken}`)
@@ -100,7 +100,7 @@ describe('Create habits', () => {
     expect(response.body).toHaveProperty('challenge');
   });
 
-  it('deveria retornar erro se estiver faltando algum campo', async () => {
+  it('should return error if any field is missing', async () => {
     const responseWithoutDescription = await agent
       .post(`/api/habits/${habitId}/challenges`)
       .set('authorization', `Bearer ${accessToken}`)
@@ -126,7 +126,7 @@ describe('Create habits', () => {
     expect(responseWithoutIcon.body.message).toBe('Some field is missing.');
   });
 
-  it('deveria retornar erro se não existir o hábito', async () => {
+  it('should return error if the habit does not exists', async () => {
     const response = await agent
       .post(`/api/habits/non-existent-id/challenges`)
       .set('authorization', `Bearer ${accessToken}`)
@@ -139,7 +139,7 @@ describe('Create habits', () => {
     expect(response.status).toBe(404);
   });
 
-  it('deveria retornar erro se não for enviado um token de autenticação válido', async () => {
+  it('should return error if a valid authentication token is not sent', async () => {
     const response = await agent
       .post(`/api/habits/${habitId}/challenges`)
       .attach('icon', svgIconPath)
