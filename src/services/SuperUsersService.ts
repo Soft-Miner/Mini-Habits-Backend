@@ -20,13 +20,13 @@ class SuperUsersService {
     const superUser = await this.repository.findOne({ email: email });
 
     if (!superUser) {
-      throw new AppError('Email or password is incorrect.');
+      throw new AppError('Email or password is incorrect.', 401);
     }
 
     const passwordIsValid = await bcrypt.compare(password, superUser.password);
 
     if (!passwordIsValid) {
-      throw new AppError('Email or password is incorrect.');
+      throw new AppError('Email or password is incorrect.', 401);
     }
 
     const access_token = jwt.sign(
