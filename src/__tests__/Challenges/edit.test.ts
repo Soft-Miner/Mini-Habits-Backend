@@ -97,7 +97,7 @@ describe('Create habits', () => {
       .attach('icon', svgIconPath)
       .field('description', 'Leia o livro inteiro em 2 segundos');
 
-    expect(response.body.message).toBe('Challenge upatdated.');
+    expect(response.body.message).toBe('Challenge updated.');
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('challenge');
   });
@@ -120,7 +120,7 @@ describe('Create habits', () => {
       .field('description', 'Leia o livro inteiro em 3 segundos');
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe('Challenge upatdated.');
+    expect(response.body.message).toBe('Challenge updated.');
     expect(response.body).toHaveProperty('challenge');
   });
 
@@ -131,7 +131,7 @@ describe('Create habits', () => {
       .attach('icon', svgIconPath);
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe('Challenge upatdated.');
+    expect(response.body.message).toBe('Challenge updated.');
     expect(response.body).toHaveProperty('challenge');
   });
 

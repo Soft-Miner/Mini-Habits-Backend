@@ -15,7 +15,7 @@ class challengesController {
       );
 
       return response.status(200).json({
-        message: 'Challenge upatdated.',
+        message: 'Challenge updated.',
         challenge,
       });
     } catch (error) {
