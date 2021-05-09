@@ -48,7 +48,7 @@ Adiciona um novo desafio no mini-hábito.
         "description": "Descrição",
         "level": 10,
         "xp_reward": 12,
-        "icon": "C:\\Users\\rodri\\Documents\\Repositorios\\MiniHabits\\mini-habits-backend\\tmp\\uploads\\155215fe03c18d9dc81e3f0b1c8fb819-Mini-Habits.svg"
+        "icon": "path/to/icon.svg"
       }
     }
     ```
