@@ -55,11 +55,11 @@ class HabitsController {
     }
 
     if (!icon) {
-      return _next(new AppError('Icon is required.'));
+      return _next(new AppError('icon is required.'));
     }
 
     if (!challengesIcons) {
-      return _next(new AppError('ChallengesIcon is required.'));
+      return _next(new AppError('challengesIcon is required.'));
     }
     if (challengesIcons.length !== challengesParsed.length) {
       return _next(

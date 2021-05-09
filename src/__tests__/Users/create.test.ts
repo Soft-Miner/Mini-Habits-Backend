@@ -32,7 +32,7 @@ describe('Create new users', () => {
     jest.clearAllMocks();
   });
 
-  it('should be possible to create a new user.', async () => {
+  it('should be possible to create a new user', async () => {
     const response = await request(app).post('/api/register').send({
       name: 'Vitor',
       lastname: 'Fernandes',
