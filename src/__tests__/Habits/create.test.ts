@@ -6,7 +6,8 @@ import fs from 'fs';
 import { Connection, createConnection } from 'typeorm';
 import SuperUser from '../../models/SuperUser';
 
-let server: Server, agent: SuperAgentTest;
+let server: Server;
+let agent: SuperAgentTest;
 let svgIconPath: string;
 let nonSvgFilePath: string;
 let accessToken: string;
