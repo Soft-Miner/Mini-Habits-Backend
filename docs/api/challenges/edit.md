@@ -36,7 +36,7 @@ Edita um challenge.
 
     ```json
     {
-      "message": "Challenge updated.",
+      "message": "Challenge successfully updated.",
       "challenge": {
         "id": "b77fd0a3-ba12-426b-806b-a7228245d5eb",
         "habits_id": "b843516d-e853-4321-b3d5-1fae3759cc80",

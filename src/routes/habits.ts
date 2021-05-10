@@ -25,4 +25,11 @@ routes.post(
   habitsController.addChallenge
 );
 
+routes.put(
+  '/habits/:id',
+  verifyAdminJWT(),
+  multer(multerConfig).single('icon'),
+  habitsController.edit
+);
+
 export default routes;

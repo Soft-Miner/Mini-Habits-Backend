@@ -139,6 +139,28 @@ class HabitsController {
       return _next(error);
     }
   }
+
+  async edit(request: Request, response: Response, _next: NextFunction) {
+    const { name, description } = request.body;
+    const { id } = request.params;
+    const icon = request.file;
+
+    try {
+      const habit = await new HabitsService().edit(
+        id,
+        name,
+        description,
+        icon ? icon.path : undefined
+      );
+
+      return response.status(200).json({
+        message: 'Habit successfully updated.',
+        habit,
+      });
+    } catch (error) {
+      return _next(error);
+    }
+  }
 }
 
 export default HabitsController;

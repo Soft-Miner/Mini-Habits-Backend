@@ -16,6 +16,10 @@ class ChallengesService {
       throw new AppError('Challenge not found.', 404);
     }
 
+    if (!icon && !description) {
+      return challenge;
+    }
+
     if (icon) {
       challenge.icon = icon;
     }

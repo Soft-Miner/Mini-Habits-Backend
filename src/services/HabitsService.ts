@@ -57,6 +57,34 @@ class HabitsService {
 
     return challenge;
   }
+
+  async edit(id: string, name?: string, description?: string, icon?: string) {
+    const habit = await this.repository.findOne(id);
+
+    if (!habit) {
+      throw new AppError('Habit not found.', 404);
+    }
+
+    if (!name && !description && !icon) {
+      return habit;
+    }
+
+    if (name) {
+      habit.name = name;
+    }
+
+    if (description) {
+      habit.description = description;
+    }
+
+    if (icon) {
+      habit.icon = icon;
+    }
+
+    await this.repository.save(habit);
+
+    return habit;
+  }
 }
 
 export default HabitsService;
