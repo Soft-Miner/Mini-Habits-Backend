@@ -10,7 +10,7 @@ let server: Server;
 let agent: SuperAgentTest;
 let svgIconPath: string;
 let accessToken: string;
-let challengId: string;
+let habitId: string;
 
 const createIconSvg = () => {
   const testFilesFolder = path.resolve(__dirname, '../../../tmp/tests');
@@ -43,7 +43,7 @@ const createHabit = async () => {
     .set('authorization', `Bearer ${accessToken}`)
     .attach('icon', svgIconPath)
     .field('name', 'Ler livro')
-    .field('description', 'Leitura é bom para a memória.')
+    .field('description', 'Leitura é muito bom para a memória.')
     .attach('challengesIcons', svgIconPath)
     .field(
       'challenges',
@@ -55,7 +55,7 @@ const createHabit = async () => {
         },
       ])
     );
-  challengId = response.body.habit.challenges[0].id;
+  habitId = response.body.habit.id;
 };
 
 const getToken = async () => {
@@ -92,55 +92,73 @@ describe('Create habits', () => {
 
   it('should be possible to update the challenge', async () => {
     const response = await agent
-      .put(`/api/challenges/${challengId}`)
+      .put(`/api/habits/${habitId}`)
       .set('authorization', `Bearer ${accessToken}`)
       .attach('icon', svgIconPath)
-      .field('description', 'Leia o livro inteiro em 2 segundos');
+      .field('name', 'Ler livro')
+      .field('description', 'Leitura é bom para a memória.');
 
-    expect(response.body.message).toBe('Challenge successfully updated.');
+    expect(response.body.message).toBe('Habit successfully updated.');
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('challenge');
+    expect(response.body).toHaveProperty('habit');
   });
 
-  it('should return error if the challenge does not exist', async () => {
+  it('should return error if the habit does not exist', async () => {
     const response = await agent
-      .put('/api/challenges/shadhs')
+      .put('/api/habits/shadhs')
       .set('authorization', `Bearer ${accessToken}`)
       .attach('icon', svgIconPath)
-      .field('description', 'Leia o livro inteiro em 2 segundos');
+      .field('name', 'Ler livro')
+      .field('description', 'Leitura é bom para a memória.');
 
+    expect(response.body.message).toBe('Habit not found.');
     expect(response.status).toBe(404);
-    expect(response.body.message).toBe('Challenge not found.');
+  });
+
+  it('should be possible to update only the name', async () => {
+    const response = await agent
+      .put(`/api/habits/${habitId}`)
+      .set('authorization', `Bearer ${accessToken}`)
+      .attach('icon', svgIconPath)
+      .field('name', 'Ler livro')
+      .field('description', 'Leitura é bom para a memória.');
+
+    expect(response.body.message).toBe('Habit successfully updated.');
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('habit');
   });
 
   it('should be possible to update only the description', async () => {
     const response = await agent
-      .put(`/api/challenges/${challengId}`)
+      .put(`/api/habits/${habitId}`)
       .set('authorization', `Bearer ${accessToken}`)
-      .field('description', 'Leia o livro inteiro em 3 segundos');
+      .field('name', 'Ler livro')
+      .field('description', 'Leitura é ruim para a memória.');
 
+    expect(response.body.message).toBe('Habit successfully updated.');
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe('Challenge successfully updated.');
-    expect(response.body).toHaveProperty('challenge');
+    expect(response.body).toHaveProperty('habit');
   });
 
   it('should be possible to update only the icon', async () => {
     const response = await agent
-      .put(`/api/challenges/${challengId}`)
+      .put(`/api/habits/${habitId}`)
       .set('authorization', `Bearer ${accessToken}`)
-      .attach('icon', svgIconPath);
+      .attach('icon', svgIconPath)
+      .field('name', 'Ler livro');
 
+    expect(response.body.message).toBe('Habit successfully updated.');
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe('Challenge successfully updated.');
-    expect(response.body).toHaveProperty('challenge');
+    expect(response.body).toHaveProperty('habit');
   });
 
-  it('should not be possible to update the challenge with invalid token', async () => {
+  it('should not be possible to update the habit with invalid token', async () => {
     const response = await agent
-      .put(`/api/challenges/${challengId}`)
+      .put(`/api/habits/${habitId}`)
       .set('authorization', 'Bearer 544')
       .attach('icon', svgIconPath)
-      .field('description', 'Leia o livro inteiro em 2 segundos');
+      .field('name', 'Ler livro')
+      .field('description', 'Leitura é bom para a memória.');
 
     expect(response.status).toBe(401);
     expect(response.body.message).toBe('Invalid token.');
@@ -148,11 +166,11 @@ describe('Create habits', () => {
 
   it('should not return an error if all fields are empty', async () => {
     const response = await agent
-      .put(`/api/challenges/${challengId}`)
+      .put(`/api/habits/${habitId}`)
       .set('authorization', `Bearer ${accessToken}`);
 
-    expect(response.body.message).toBe('Challenge successfully updated.');
+    expect(response.body.message).toBe('Habit successfully updated.');
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('challenge');
+    expect(response.body).toHaveProperty('habit');
   });
 });
