@@ -90,7 +90,7 @@ describe('Create habits', () => {
     return server && server.close(done);
   });
 
-  it('should be possible to update the challenge', async () => {
+  it('should be possible to update the habit', async () => {
     const response = await agent
       .put(`/api/habits/${habitId}`)
       .set('authorization', `Bearer ${accessToken}`)
