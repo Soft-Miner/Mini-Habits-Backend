@@ -8,5 +8,7 @@
 | POST   | [/api/super_users/authenticate](./superUsers/authenticate.md)   | Retorna um `access_token` e `refresh_token` para o admin.                      |
 | POST   | [/api/super_users/refresh_token](./superUsers/refresh-token.md) | Retorna um novo `access_token` e `refresh_token` a partir de um refresh_token. |
 | POST   | [/api/habits](./habits/create.md)                               | Cria um novo hábito.                                                           |
+| PUT    | [/api/habits](./habits/edit.md)                                 | Edita um hábito.                                                               |
 | POST   | [/api/habits/{id}/challenges](./habits/addChallenge.md)         | Adiciona um novo desafio no mini-hábito.                                       |
 | PUT    | [/api/challenges/{id}](./challenges/edit.md)                    | Edita um challenge.                                                            |
+| PUT    | [/api/users/{id}](./users/update.md)                            | Atualiza o nome e/ou sobrenome do usuário.                                     |
