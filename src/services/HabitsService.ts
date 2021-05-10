@@ -85,6 +85,24 @@ class HabitsService {
 
     return habit;
   }
+
+  async getAll() {
+    const habits = this.repository.find();
+
+    return habits;
+  }
+
+  async getById(id: string) {
+    const habit = await this.repository.findOne(id, {
+      relations: ['challenges'],
+    });
+
+    if (!habit) {
+      throw new AppError('Habit not found.', 404);
+    }
+
+    return habit;
+  }
 }
 
 export default HabitsService;

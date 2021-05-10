@@ -63,7 +63,7 @@ const getToken = async () => {
   accessToken = response.body.access_token;
 };
 
-describe('Create habits', () => {
+describe('Add Challenge habits', () => {
   beforeAll(async (done) => {
     const connection = await createConnection();
     await connection.dropDatabase();
