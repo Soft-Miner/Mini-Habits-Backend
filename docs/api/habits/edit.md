@@ -26,7 +26,7 @@ Edita um hábito.
 
   `description`
 
-  `icon` - Arquivo svg que será o ícone do Challenge
+  `icon` - Arquivo svg que será o ícone do Hábito
 
 </br>
 
@@ -41,15 +41,15 @@ Edita um hábito.
       "message": "Habit successfully created.",
       "habit": {
         "id": "81388b85-828f-4f16-a58a-b9a767714ffc",
-        "icon": "C:\\Users\\rogn\\Documents\\mini-habits\\Mini-Habits-Backend\\tmp\\uploads\\f7f923159fe91fc7837024a149af0c4f-accessible-icon-brands.svg",
-        "name": "peixe3",
-        "description": "tentando criar ",
+        "icon": "path/to/icon.svg",
+        "name": "nome",
+        "description": "descrição",
         "challenges": [
           {
             "id": "077c9860-c658-49e8-9df0-2ab7864c8adf",
             "level": 0,
-            "description": "d",
-            "icon": "C:\\Users\\rogn\\Documents\\mini-habits\\Mini-Habits-Backend\\tmp\\uploads\\aab9b7e9108cb0c33da93dba63142f2f-address-card-solid.svg",
+            "description": "descrição",
+            "icon": "path/to/icon.svg",
             "xp_reward": 10,
             "habits_id": "81388b85-828f-4f16-a58a-b9a767714ffc",
             "last_modified": "2021-05-10T00:34:38.000Z",
