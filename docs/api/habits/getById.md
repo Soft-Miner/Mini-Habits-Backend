@@ -55,6 +55,12 @@ Pega um hábito pelo Id.
 
 - **Error Response:**
 
+  - **Code:** 401 UNAUTHORIZED
+
+    **Content:** `{ "message": "Invalid token." }`
+
+    OR
+
   - **Code:** 404 NOT FOUND
 
     **Content:** `{ "message": "Habit not found." }`

@@ -19,10 +19,6 @@ const createIconSvg = () => {
   const filePath = path.resolve(testFilesFolder, filename);
   svgIconPath = filePath;
   fs.writeFileSync(filePath, '');
-
-  const nonSvgfilename = 'icon.pdf';
-  const nonSvgfilePath = path.resolve(testFilesFolder, nonSvgfilename);
-  fs.writeFileSync(nonSvgfilePath, '');
 };
 
 const createSuperUSer = async (connection: Connection) => {
@@ -67,7 +63,7 @@ const getToken = async () => {
   accessToken = response.body.access_token;
 };
 
-describe('Get habits by id', () => {
+describe('Get habit by id', () => {
   beforeAll(async (done) => {
     const connection = await createConnection();
     await connection.dropDatabase();
@@ -107,5 +103,14 @@ describe('Get habits by id', () => {
 
     expect(response.body.message).toBe('Habit not found.');
     expect(response.status).toBe(404);
+  });
+
+  it('should return error if token is invalid', async () => {
+    const response = await agent
+      .get(`/api/habits/${habitId}`)
+      .set('authorization', `Bearer 533`);
+
+    expect(response.body.message).toBe('Invalid token.');
+    expect(response.status).toBe(401);
   });
 });

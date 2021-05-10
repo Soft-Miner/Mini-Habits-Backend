@@ -1,4 +1,4 @@
-## **Get Habit**
+## **Get all Habits**
 
 Pega todos os hábitos.
 
@@ -54,3 +54,5 @@ Pega todos os hábitos.
 - **Error Response:**
 
   - **Code:** 401 UNAUTHORIZED
+
+    **Content:** `{ "message": "Invalid token." }`
