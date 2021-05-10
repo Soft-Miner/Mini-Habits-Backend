@@ -6,7 +6,8 @@ import fs from 'fs';
 import { Connection, createConnection } from 'typeorm';
 import SuperUser from '../../models/SuperUser';
 
-let server: Server, agent: SuperAgentTest;
+let server: Server;
+let agent: SuperAgentTest;
 let svgIconPath: string;
 let accessToken: string;
 let habitId: string;
@@ -20,7 +21,7 @@ const createIconSvg = () => {
   fs.writeFileSync(filePath, '');
 };
 
-const createSuperUser = async (connection: Connection) => {
+const createSuperUSer = async (connection: Connection) => {
   const usersRepository = connection.getRepository(SuperUser);
 
   const user = usersRepository.create({
@@ -38,7 +39,7 @@ const createHabit = async () => {
     .set('authorization', `Bearer ${accessToken}`)
     .attach('icon', svgIconPath)
     .field('name', 'Ler livro')
-    .field('description', 'Leitura é bom para a memória.')
+    .field('description', 'Leitura é muito bom para a memória.')
     .attach('challengesIcons', svgIconPath)
     .field(
       'challenges',
@@ -50,7 +51,6 @@ const createHabit = async () => {
         },
       ])
     );
-
   habitId = response.body.habit.id;
 };
 
@@ -63,12 +63,12 @@ const getToken = async () => {
   accessToken = response.body.access_token;
 };
 
-describe('Add Challenge', () => {
+describe('Get habit by id', () => {
   beforeAll(async (done) => {
     const connection = await createConnection();
     await connection.dropDatabase();
     await connection.runMigrations();
-    await createSuperUser(connection);
+    await createSuperUSer(connection);
 
     createIconSvg();
 
@@ -86,66 +86,29 @@ describe('Add Challenge', () => {
     return server && server.close(done);
   });
 
-  it('should be possible to add a new challenge', async () => {
+  it('should be possible to get a habit by id', async () => {
     const response = await agent
-      .post(`/api/habits/${habitId}/challenges`)
-      .set('authorization', `Bearer ${accessToken}`)
-      .attach('icon', svgIconPath)
-      .field('description', 'Descrição')
-      .field('level', '10')
-      .field('xp_reward', '20');
+      .get(`/api/habits/${habitId}`)
+      .set('authorization', `Bearer ${accessToken}`);
 
-    expect(response.body.message).toBe('Challenge successfully created.');
-    expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty('challenge');
+    expect(response.status).toBe(200);
+    expect(response.body.id).toBe(habitId);
+    expect(response.body).toHaveProperty('challenges');
   });
 
-  it('should return error if any field is missing', async () => {
-    const responseWithoutDescription = await agent
-      .post(`/api/habits/${habitId}/challenges`)
-      .set('authorization', `Bearer ${accessToken}`)
-      .attach('icon', svgIconPath)
-      .field('level', '10')
-      .field('xp_reward', '20');
-
-    const responseWithoutIcon = await agent
-      .post(`/api/habits/${habitId}/challenges`)
-      .set('authorization', `Bearer ${accessToken}`)
-      .field('description', 'Descrição')
-      .field('level', '10')
-      .field('xp_reward', '20');
-
-    expect(responseWithoutDescription.body.message).toBe(
-      'Some field is missing.'
-    );
-    expect(responseWithoutDescription.status).toBe(400);
-    expect(responseWithoutDescription.body.message).toBe(
-      'Some field is missing.'
-    );
-    expect(responseWithoutIcon.status).toBe(400);
-    expect(responseWithoutIcon.body.message).toBe('Some field is missing.');
-  });
-
-  it('should return error if the habit does not exists', async () => {
+  it('should not be possible to get a habit by the wrong id', async () => {
     const response = await agent
-      .post(`/api/habits/non-existent-id/challenges`)
-      .set('authorization', `Bearer ${accessToken}`)
-      .attach('icon', svgIconPath)
-      .field('description', 'Descrição')
-      .field('level', '10')
-      .field('xp_reward', '20');
+      .get('/api/habits/123')
+      .set('authorization', `Bearer ${accessToken}`);
 
     expect(response.body.message).toBe('Habit not found.');
     expect(response.status).toBe(404);
   });
 
-  it('should return error if a valid authentication token is not sent', async () => {
+  it('should return error if token is invalid', async () => {
     const response = await agent
-      .post(`/api/habits/${habitId}/challenges`)
-      .attach('icon', svgIconPath)
-      .field('description', 'Descrição')
-      .field('level', '10')
-      .field('xp_reward', '20');
+      .get(`/api/habits/${habitId}`)
+      .set('authorization', `Bearer 533`);
 
     expect(response.body.message).toBe('Invalid token.');
     expect(response.status).toBe(401);

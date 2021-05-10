@@ -32,4 +32,8 @@ routes.put(
   habitsController.edit
 );
 
+routes.get('/habits', verifyAdminJWT(), habitsController.getAll);
+
+routes.get('/habits/:id', verifyAdminJWT(), habitsController.getById);
+
 export default routes;

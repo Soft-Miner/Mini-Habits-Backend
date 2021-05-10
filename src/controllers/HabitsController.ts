@@ -161,6 +161,28 @@ class HabitsController {
       return _next(error);
     }
   }
+
+  async getAll(request: Request, response: Response, _next: NextFunction) {
+    try {
+      const habits = await new HabitsService().getAll();
+
+      return response.status(200).json(habits);
+    } catch (error) {
+      return _next(error);
+    }
+  }
+
+  async getById(request: Request, response: Response, _next: NextFunction) {
+    const { id } = request.params;
+
+    try {
+      const habit = await new HabitsService().getById(id);
+
+      return response.status(200).json(habit);
+    } catch (error) {
+      return _next(error);
+    }
+  }
 }
 
 export default HabitsController;
