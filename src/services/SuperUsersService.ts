@@ -49,7 +49,7 @@ class SuperUsersService {
       process.env.JWT_SECRET_ADMIN as string,
       {
         jwtid: uuid(),
-        expiresIn: '1d', // 1 day
+        expiresIn: 60 * 30, // 30 minutes
       }
     );
 

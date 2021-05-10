@@ -27,6 +27,7 @@ class AuthService {
     const token = jwt.sign(
       {
         id: user.id,
+        typ: 'access',
       },
       process.env.JWT_SECRET as string
     );

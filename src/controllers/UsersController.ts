@@ -117,6 +117,42 @@ class UsersController {
       return _next(error);
     }
   }
+
+  async update(request: Request, response: Response, _next: NextFunction) {
+    const { name, lastname } = request.body;
+    const { id } = request.params;
+    const { userId } = request;
+
+    if (id !== userId) {
+      return _next(new AppError('You cannot change this user.', 401));
+    }
+
+    const validNameFormat =
+      typeof name === 'string' || typeof name === 'undefined';
+    const validLastnameFormat =
+      typeof lastname === 'string' || typeof lastname === 'undefined';
+
+    if (!validNameFormat || !validLastnameFormat) {
+      return _next(new AppError('Something wrong with the request.'));
+    }
+
+    try {
+      const user = await new UsersService().update(id, name, lastname);
+
+      return response.status(200).json({
+        message: 'User successfully updated.',
+        user: {
+          id: user.id,
+          name: user.name,
+          lastname: user.lastname,
+          email: user.email,
+          created_at: user.created_at,
+        },
+      });
+    } catch (error) {
+      return _next(error);
+    }
+  }
 }
 
 export default UsersController;

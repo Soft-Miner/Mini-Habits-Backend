@@ -178,6 +178,30 @@ class UsersService {
       await transactionalEntityManager.remove(resetRequest);
     });
   }
+
+  async update(id: string, name?: string, lastname?: string) {
+    const user = await this.repository.findOne(id);
+
+    if (!user) {
+      throw new AppError('User not found.', 404);
+    }
+
+    if (!name && !lastname) {
+      return user;
+    }
+
+    if (name) {
+      user.name = name;
+    }
+
+    if (lastname) {
+      user.lastname = lastname;
+    }
+
+    await this.repository.save(user);
+
+    return user;
+  }
 }
 
 export default UsersService;

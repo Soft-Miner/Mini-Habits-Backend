@@ -22,11 +22,11 @@ Edita um hábito.
 
 - **Data Params (Multipart)**
 
-  `name`
+  `name?`
 
-  `description`
+  `description?`
 
-  `icon` - Arquivo svg que será o ícone do Hábito
+  `icon?` - Arquivo svg que será o ícone do Hábito
 
 </br>
 

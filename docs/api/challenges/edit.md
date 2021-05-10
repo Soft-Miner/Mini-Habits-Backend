@@ -22,9 +22,9 @@ Edita um challenge.
 
 - **Data Params (Multipart)**
 
-  `description`
+  `description?`
 
-  `icon` - Arquivo svg que será o ícone do Challenge
+  `icon?` - Arquivo svg que será o ícone do Challenge
 
 </br>
 

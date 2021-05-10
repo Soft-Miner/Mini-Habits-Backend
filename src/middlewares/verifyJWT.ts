@@ -4,6 +4,7 @@ import { AppError } from '../errors/AppError';
 
 interface tokenPayload {
   id: string;
+  typ: string;
 }
 
 export const verifyJWT = () => {
@@ -14,10 +15,14 @@ export const verifyJWT = () => {
     if (!token) throw new AppError('Invalid token.', 401);
 
     jwt.verify(token, process.env.JWT_SECRET as string, (error, decoded) => {
-      if (error) throw new AppError('Invalid token.', 401);
+      const payload = decoded as tokenPayload;
+
+      if (error || payload.typ !== 'access') {
+        throw new AppError('Invalid token.', 401);
+      }
 
       if (decoded) {
-        request.userId = (decoded as tokenPayload).id;
+        request.userId = payload.id;
       }
 
       return _next();
