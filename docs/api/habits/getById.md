@@ -20,8 +20,6 @@ Pega um hábito pelo Id.
 
 </br>
 
-</br>
-
 - **Success Response:**
 
   - **Code:** 200 OK

@@ -272,8 +272,6 @@ class UsersService {
     user.password = passwordHash;
 
     await this.repository.save(user);
-
-    return;
   }
 }
 
