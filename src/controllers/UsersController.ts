@@ -153,6 +153,49 @@ class UsersController {
       return _next(error);
     }
   }
+
+  async updateEmail(request: Request, response: Response, _next: NextFunction) {
+    const { new_email, password } = request.body;
+    const { id } = request.params;
+    const { userId } = request;
+
+    if (id !== userId) {
+      return _next(new AppError('You cannot change this user.', 401));
+    }
+
+    const schema = yup.object().shape({
+      new_email: yup.string().email().required(),
+      password: yup.string().required(),
+    });
+
+    try {
+      await schema.validate(request.body);
+    } catch (error) {
+      return _next(new AppError('Something wrong with the request.'));
+    }
+
+    try {
+      const user = await new UsersService().updateEmail(
+        id,
+        new_email,
+        password
+      );
+
+      return response.status(200).json({
+        message: 'Please verify the new email.',
+        user: {
+          id: user.id,
+          name: user.name,
+          lastname: user.lastname,
+          email: user.email,
+          email_to_verify: user.email_to_verify,
+          created_at: user.created_at,
+        },
+      });
+    } catch (error) {
+      return _next(error);
+    }
+  }
 }
 
 export default UsersController;

@@ -14,3 +14,4 @@
 | PUT    | [/api/users/{id}](./users/update.md)                            | Atualiza o nome e/ou sobrenome do usuário.                                     |
 | GET    | [/api/habits/{id}](./habits/getByid.md)                         | Pega um hábito pelo Id.                                                        |
 | GET    | [/api/habits](./habits/getAll.md)                               | Pega todos os hábitos.                                                         |
+| PUT    | [/api/users/{id}/change-email](./users/change-email.md)         | Atualiza o email do usuário.                                                   |

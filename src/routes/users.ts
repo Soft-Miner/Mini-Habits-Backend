@@ -13,4 +13,6 @@ routes.post('/verify-email', usersController.verifyEmail);
 
 routes.put('/users/:id', verifyJWT(), usersController.update);
 
+routes.put('/users/:id/change-email', verifyJWT(), usersController.updateEmail);
+
 export default routes;
