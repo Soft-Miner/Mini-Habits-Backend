@@ -46,7 +46,7 @@ Atualiza o email do usuário.
 
 - **Error Response:**
 
-  - **Code:** 400 NOT FOUND
+  - **Code:** 400 BAD REQUEST
 
     **Content:** `{ "message": "A user already exists with this email." }`
 

@@ -159,14 +159,14 @@ class UsersController {
     const { id } = request.params;
     const { userId } = request;
 
+    if (id !== userId) {
+      return _next(new AppError('You cannot change this user.', 401));
+    }
+
     const schema = yup.object().shape({
       new_email: yup.string().email().required(),
       password: yup.string().required(),
     });
-
-    if (id !== userId) {
-      return _next(new AppError('You cannot change this user.', 401));
-    }
 
     try {
       await schema.validate(request.body);
