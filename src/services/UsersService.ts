@@ -59,7 +59,10 @@ class UsersService {
       {
         id: user.id,
       },
-      process.env.JWT_SECRET as string
+      process.env.JWT_SECRET as string,
+      {
+        jwtid: uuid(),
+      }
     );
 
     await SendMailService.execute({
@@ -199,6 +202,54 @@ class UsersService {
     }
 
     await this.repository.save(user);
+
+    return user;
+  }
+
+  async updateEmail(id: string, new_email: string, password: string) {
+    const user = await this.repository.findOne(id);
+
+    if (!user) {
+      throw new AppError('User not found.', 404);
+    }
+
+    const passwordIsValid = await bcrypt.compare(password, user.password);
+
+    if (!passwordIsValid) {
+      throw new AppError('Password is incorrect.', 401);
+    }
+
+    const userWithThisEmail = await this.repository.findOne({
+      email: new_email,
+    });
+
+    if (userWithThisEmail) {
+      throw new AppError('A user already exists with this email.');
+    }
+
+    user.email_to_verify = new_email;
+
+    await this.repository.save(user);
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+      },
+      process.env.JWT_SECRET as string,
+      {
+        jwtid: uuid(),
+      }
+    );
+
+    await SendMailService.execute({
+      to: user.email_to_verify,
+      subject: 'Confirmação de Email',
+      variables: {
+        name: user.name,
+        link: `https://mini-habitos.soft-miner.com/verificar-email/${token}`,
+      },
+      path: resolve(__dirname, '../../views/emails/confirmEmail.hbs'),
+    });
 
     return user;
   }
