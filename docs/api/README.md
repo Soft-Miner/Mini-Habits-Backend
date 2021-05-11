@@ -15,3 +15,4 @@
 | GET    | [/api/habits/{id}](./habits/getByid.md)                         | Pega um hábito pelo Id.                                                        |
 | GET    | [/api/habits](./habits/getAll.md)                               | Pega todos os hábitos.                                                         |
 | PUT    | [/api/users/{id}/change-email](./users/change-email.md)         | Atualiza o email do usuário.                                                   |
+| PUT    | [/api/users/change-password](./users/change-password.md)        | Atualiza a senha do usuário.                                                   |

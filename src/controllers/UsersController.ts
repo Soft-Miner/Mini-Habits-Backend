@@ -203,12 +203,7 @@ class UsersController {
     _next: NextFunction
   ) {
     const { password, new_password } = request.body;
-    const { id } = request.params;
     const { userId } = request;
-
-    if (id !== userId) {
-      return _next(new AppError('You cannot change this user.', 401));
-    }
 
     const schema = yup.object().shape({
       password: yup.string().required(),
@@ -222,7 +217,11 @@ class UsersController {
     }
 
     try {
-      await new UsersService().updatePassword(id, password, new_password);
+      await new UsersService().updatePassword(
+        userId as string,
+        password,
+        new_password
+      );
 
       return response.status(200).json({
         message: 'Password updated.',
