@@ -196,6 +196,41 @@ class UsersController {
       return _next(error);
     }
   }
+
+  async updatePassword(
+    request: Request,
+    response: Response,
+    _next: NextFunction
+  ) {
+    const { password, new_password } = request.body;
+    const { id } = request.params;
+    const { userId } = request;
+
+    if (id !== userId) {
+      return _next(new AppError('You cannot change this user.', 401));
+    }
+
+    const schema = yup.object().shape({
+      password: yup.string().required(),
+      new_password: yup.string().required(),
+    });
+
+    try {
+      await schema.validate(request.body);
+    } catch (error) {
+      return _next(new AppError('Something wrong with the request.'));
+    }
+
+    try {
+      await new UsersService().updatePassword(id, password, new_password);
+
+      return response.status(200).json({
+        message: 'Password updated.',
+      });
+    } catch (error) {
+      return _next(error);
+    }
+  }
 }
 
 export default UsersController;

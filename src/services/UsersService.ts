@@ -253,6 +253,28 @@ class UsersService {
 
     return user;
   }
+
+  async updatePassword(id: string, password: string, new_password: string) {
+    const user = await this.repository.findOne(id);
+
+    if (!user) {
+      throw new AppError('User not found.', 404);
+    }
+
+    const passwordIsValid = await bcrypt.compare(password, user.password);
+
+    if (!passwordIsValid) {
+      throw new AppError('Password is incorrect.', 401);
+    }
+
+    const passwordHash = await bcrypt.hash(new_password, 10);
+
+    user.password = passwordHash;
+
+    await this.repository.save(user);
+
+    return;
+  }
 }
 
 export default UsersService;
