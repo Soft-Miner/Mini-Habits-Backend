@@ -118,14 +118,13 @@ class UsersController {
     }
   }
 
-  async update(request: Request, response: Response, _next: NextFunction) {
+  async updatePersonalData(
+    request: Request,
+    response: Response,
+    _next: NextFunction
+  ) {
     const { name, lastname } = request.body;
-    const { id } = request.params;
     const { userId } = request;
-
-    if (id !== userId) {
-      return _next(new AppError('You cannot change this user.', 401));
-    }
 
     const validNameFormat =
       typeof name === 'string' || typeof name === 'undefined';
@@ -137,7 +136,11 @@ class UsersController {
     }
 
     try {
-      const user = await new UsersService().update(id, name, lastname);
+      const user = await new UsersService().updatePersonalData(
+        userId as string,
+        name,
+        lastname
+      );
 
       return response.status(200).json({
         message: 'User successfully updated.',
@@ -156,12 +159,7 @@ class UsersController {
 
   async updateEmail(request: Request, response: Response, _next: NextFunction) {
     const { new_email, password } = request.body;
-    const { id } = request.params;
     const { userId } = request;
-
-    if (id !== userId) {
-      return _next(new AppError('You cannot change this user.', 401));
-    }
 
     const schema = yup.object().shape({
       new_email: yup.string().email().required(),
@@ -176,7 +174,7 @@ class UsersController {
 
     try {
       const user = await new UsersService().updateEmail(
-        id,
+        userId as string,
         new_email,
         password
       );

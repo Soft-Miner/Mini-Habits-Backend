@@ -4,7 +4,7 @@ Atualiza o email do usuário.
 
 - **URL**
 
-  /api/users/{id}/change-email
+  /api/users/change-email
 
 </br>
 

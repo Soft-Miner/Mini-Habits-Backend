@@ -8,7 +8,6 @@ import jwt from 'jsonwebtoken';
 let server: Server, agent: SuperAgentTest;
 let token: string;
 let tokenOfNonExistentUser: string;
-let userId: string;
 
 const mockSendEmail = jest.fn();
 
@@ -33,7 +32,6 @@ const getToken = async (connection: Connection) => {
     password: '123',
   });
 
-  userId = user.id;
   token = response.body.token;
 
   tokenOfNonExistentUser = jwt.sign(
@@ -66,7 +64,7 @@ describe('Update email', () => {
 
   it('should be possible to update the email', async () => {
     const response = await agent
-      .put(`/api/users/${userId}/change-email`)
+      .put('/api/users/change-email')
       .set('authorization', `Bearer ${token}`)
       .send({
         new_email: 'rodrigogonn@hotmail.com',
@@ -81,7 +79,7 @@ describe('Update email', () => {
 
   it('should return an error if the token is invalid', async () => {
     const response = await agent
-      .put(`/api/users/${userId}/change-email`)
+      .put('/api/users/change-email')
       .set('authorization', `Bearer 123`)
       .send({
         new_email: 'rodrigogonn@hotmail.com',
@@ -94,7 +92,7 @@ describe('Update email', () => {
 
   it('should return an error if the user does not exists', async () => {
     const response = await agent
-      .put(`/api/users/some-id/change-email`)
+      .put('/api/users/change-email')
       .set('authorization', `Bearer ${tokenOfNonExistentUser}`)
       .send({
         new_email: 'rodrigogonn@hotmail.com',
@@ -107,7 +105,7 @@ describe('Update email', () => {
 
   it('should return an error if some data format is invalid', async () => {
     const response = await agent
-      .put(`/api/users/${userId}/change-email`)
+      .put('/api/users/change-email')
       .set('authorization', `Bearer ${token}`)
       .send({
         new_email: 'rodrigo_gonnhotmail.com',
@@ -118,22 +116,9 @@ describe('Update email', () => {
     expect(response.status).toBe(400);
   });
 
-  it('should return an error if the user is trying to update another user', async () => {
-    const response = await agent
-      .put(`/api/users/123/change-email`)
-      .set('authorization', `Bearer ${tokenOfNonExistentUser}`)
-      .send({
-        new_email: 'rodrigogonn@hotmail.com',
-        password: '123',
-      });
-
-    expect(response.body.message).toBe('You cannot change this user.');
-    expect(response.status).toBe(401);
-  });
-
   it('should return error if the password is incorrect', async () => {
     const response = await agent
-      .put(`/api/users/${userId}/change-email`)
+      .put('/api/users/change-email')
       .set('authorization', `Bearer ${token}`)
       .send({
         new_email: 'rodrigogon@hotmail.com',
@@ -146,7 +131,7 @@ describe('Update email', () => {
 
   it('should not be possible to update a email in use', async () => {
     const response = await agent
-      .put(`/api/users/${userId}/change-email`)
+      .put('/api/users/change-email')
       .set('authorization', `Bearer ${token}`)
       .send({
         new_email: 'rodrigo_gonn@hotmail.com',

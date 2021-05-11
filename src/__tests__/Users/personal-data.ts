@@ -8,7 +8,6 @@ import jwt from 'jsonwebtoken';
 let server: Server, agent: SuperAgentTest;
 let token: string;
 let tokenOfNonExistentUser: string;
-let userId: string;
 
 const getToken = async (connection: Connection) => {
   const usersRepository = connection.getRepository(User);
@@ -27,7 +26,6 @@ const getToken = async (connection: Connection) => {
     password: '123',
   });
 
-  userId = user.id;
   token = response.body.token;
 
   tokenOfNonExistentUser = jwt.sign(
@@ -39,7 +37,7 @@ const getToken = async (connection: Connection) => {
   );
 };
 
-describe('Update User', () => {
+describe('Update personal', () => {
   beforeAll(async (done) => {
     const connection = await createConnection();
     await connection.dropDatabase();
@@ -60,7 +58,7 @@ describe('Update User', () => {
 
   it('should be possible to update user name and lastname', async () => {
     const response = await agent
-      .put(`/api/users/${userId}`)
+      .put('/api/users/personal-data')
       .set('authorization', `Bearer ${token}`)
       .send({
         name: 'Rodrigo 2',
@@ -74,13 +72,13 @@ describe('Update User', () => {
 
   it('should be possible to update only name or lastname', async () => {
     const responseOnlyName = await agent
-      .put(`/api/users/${userId}`)
+      .put('/api/users/personal-data')
       .set('authorization', `Bearer ${token}`)
       .send({
         name: 'Rodrigo 2',
       });
     const responseOnlyLastname = await agent
-      .put(`/api/users/${userId}`)
+      .put('/api/users/personal-data')
       .set('authorization', `Bearer ${token}`)
       .send({
         lastname: 'Gonçalves 2',
@@ -98,7 +96,7 @@ describe('Update User', () => {
 
   it('should return error if the token is invalid', async () => {
     const response = await agent
-      .put(`/api/users/${userId}`)
+      .put('/api/users/personal-data')
       .set('authorization', `Bearer 123`)
       .send({
         name: 'Rodrigo 2',
@@ -111,7 +109,7 @@ describe('Update User', () => {
 
   it('should not return an error if all fields are empty', async () => {
     const response = await agent
-      .put(`/api/users/${userId}`)
+      .put('/api/users/personal-data')
       .set('authorization', `Bearer ${token}`)
       .send({});
 
@@ -122,7 +120,7 @@ describe('Update User', () => {
 
   it('should return an error if the user does not exists', async () => {
     const response = await agent
-      .put(`/api/users/some-id`)
+      .put('/api/users/personal-data')
       .set('authorization', `Bearer ${tokenOfNonExistentUser}`)
       .send({
         name: 'Rodrigo 2',
@@ -135,7 +133,7 @@ describe('Update User', () => {
 
   it('should return an error if some data format is invalid', async () => {
     const response = await agent
-      .put(`/api/users/${userId}`)
+      .put('/api/users/personal-data')
       .set('authorization', `Bearer ${token}`)
       .send({
         name: 123,
@@ -143,18 +141,5 @@ describe('Update User', () => {
 
     expect(response.body.message).toBe('Something wrong with the request.');
     expect(response.status).toBe(400);
-  });
-
-  it('should return an error if the user is trying to update another user', async () => {
-    const response = await agent
-      .put(`/api/users/123`)
-      .set('authorization', `Bearer ${tokenOfNonExistentUser}`)
-      .send({
-        name: 'Rodrigo 2',
-        lastname: 'Gonçalves 2',
-      });
-
-    expect(response.body.message).toBe('You cannot change this user.');
-    expect(response.status).toBe(401);
   });
 });

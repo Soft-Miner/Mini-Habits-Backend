@@ -182,7 +182,7 @@ class UsersService {
     });
   }
 
-  async update(id: string, name?: string, lastname?: string) {
+  async updatePersonalData(id: string, name?: string, lastname?: string) {
     const user = await this.repository.findOne(id);
 
     if (!user) {
