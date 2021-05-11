@@ -20,8 +20,6 @@ Pega todos os hábitos.
 
 </br>
 
-</br>
-
 - **Success Response:**
 
   - **Code:** 200 OK

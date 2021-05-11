@@ -11,8 +11,14 @@ routes.post('/request-password', usersController.requestNewPassword);
 routes.post('/new-password', usersController.newPassword);
 routes.post('/verify-email', usersController.verifyEmail);
 
-routes.put('/users/:id', verifyJWT(), usersController.update);
+routes.put(
+  '/users/change-password',
+  verifyJWT(),
+  usersController.updatePassword
+);
 
 routes.put('/users/:id/change-email', verifyJWT(), usersController.updateEmail);
+
+routes.put('/users/:id', verifyJWT(), usersController.update);
 
 export default routes;
