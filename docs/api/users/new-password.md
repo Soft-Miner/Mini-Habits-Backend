@@ -14,12 +14,6 @@ Altera a senha do usuário.
 
 </br>
 
-- **Headers:**
-
-  `authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ3ZmIzNjA0LTAyODctNGU4Ny1iNmM4LWUxZjg1OWVmYzE4NSIsImlhdCI6MTYxOTkxNjY5N30.NtmpXxyKqzpw-BzF0ZxJnMU7YuFiVy-5VqtErbq0bO0`
-
-</br>
-
 - **Data Params**
 
   `requestId: string`
