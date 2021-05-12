@@ -228,6 +228,24 @@ class UsersController {
       return _next(error);
     }
   }
+
+  async getById(request: Request, response: Response, _next: NextFunction) {
+    const { userId } = request;
+
+    try {
+      const user = await new UsersService().getById(userId as string);
+
+      return response.status(200).json({
+        id: user.id,
+        name: user.name,
+        lastname: user.lastname,
+        email: user.email,
+        created_at: user.created_at,
+      });
+    } catch (error) {
+      return _next(error);
+    }
+  }
 }
 
 export default UsersController;
