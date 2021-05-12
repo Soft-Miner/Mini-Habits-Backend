@@ -39,7 +39,7 @@ const messageInvalidToken = encodeURIComponent(
 );
 const messageUserNotFound = encodeURIComponent('Usúario não encontrado.');
 const messageEmailAlredyVerified = encodeURIComponent(
-  'Essa email já foi verificado.'
+  'Esse email já foi verificado.'
 );
 
 describe('Verify Email', () => {
