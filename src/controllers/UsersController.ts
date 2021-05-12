@@ -72,21 +72,21 @@ class UsersController {
     }
   }
 
-  async verifyEmail(request: Request, response: Response, _next: NextFunction) {
-    const { token } = request.body;
-
-    if (!token) {
-      return _next(new AppError('Invalid token.', 401));
-    }
+  async verifyEmail(request: Request, response: Response) {
+    const { token } = request.params;
 
     try {
       await new UsersService().verifyEmail(token);
 
-      return response.status(200).json({
-        message: 'Email successfully verified.',
-      });
+      return response.redirect(
+        'https://mini-habitos.soft-miner.com/email-verificado'
+      );
     } catch (error) {
-      return _next(error);
+      const message = encodeURIComponent(error.message);
+
+      return response.redirect(
+        `https://mini-habitos.soft-miner.com/erro?message=${message}`
+      );
     }
   }
 

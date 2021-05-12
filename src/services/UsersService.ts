@@ -121,13 +121,14 @@ class UsersService {
 
   async verifyEmail(token: string) {
     let decodedToken: TokenPayload;
+
     try {
       decodedToken = jwt.verify(
         token,
         process.env.JWT_SECRET as string
       ) as TokenPayload;
     } catch (error) {
-      throw new AppError('Invalid token.', 401);
+      throw new AppError('OOPS.. Alguma coisa deu errado. 😥', 401);
     }
 
     const userId = decodedToken.id;
@@ -135,11 +136,11 @@ class UsersService {
     const user = await this.repository.findOne(userId);
 
     if (!user) {
-      throw new AppError('User not found.', 404);
+      throw new AppError('Usúario não encontrado.', 404);
     }
 
     if (!user.email_to_verify) {
-      throw new AppError('This email was already verified.');
+      throw new AppError('Esse email já foi verificado.');
     }
 
     user.email = user.email_to_verify;
