@@ -17,8 +17,12 @@ routes.put(
   usersController.updatePassword
 );
 
-routes.put('/users/:id/change-email', verifyJWT(), usersController.updateEmail);
+routes.put('/users/change-email', verifyJWT(), usersController.updateEmail);
 
-routes.put('/users/:id', verifyJWT(), usersController.update);
+routes.put(
+  '/users/personal-data',
+  verifyJWT(),
+  usersController.updatePersonalData
+);
 
 export default routes;

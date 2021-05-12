@@ -11,8 +11,8 @@
 | PUT    | [/api/habits](./habits/edit.md)                                 | Edita um hábito.                                                               |
 | POST   | [/api/habits/{id}/challenges](./habits/addChallenge.md)         | Adiciona um novo desafio no mini-hábito.                                       |
 | PUT    | [/api/challenges/{id}](./challenges/edit.md)                    | Edita um challenge.                                                            |
-| PUT    | [/api/users/{id}](./users/update.md)                            | Atualiza o nome e/ou sobrenome do usuário.                                     |
+| PUT    | [/api/users/personal-data](./users/personal-data.md)            | Atualiza o nome e/ou sobrenome do usuário.                                     |
 | GET    | [/api/habits/{id}](./habits/getByid.md)                         | Pega um hábito pelo Id.                                                        |
 | GET    | [/api/habits](./habits/getAll.md)                               | Pega todos os hábitos.                                                         |
-| PUT    | [/api/users/{id}/change-email](./users/change-email.md)         | Atualiza o email do usuário.                                                   |
+| PUT    | [/api/users/change-email](./users/change-email.md)              | Atualiza o email do usuário.                                                   |
 | PUT    | [/api/users/change-password](./users/change-password.md)        | Atualiza a senha do usuário.                                                   |

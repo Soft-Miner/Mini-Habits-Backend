@@ -1,10 +1,10 @@
-## **Update User**
+## **Update personal data**
 
 Atualiza o nome e/ou sobrenome do usuário.
 
 - **URL**
 
-  /api/users/{id}
+  /api/users/personal-data
 
 </br>
 
