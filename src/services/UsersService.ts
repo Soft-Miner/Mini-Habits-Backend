@@ -140,7 +140,7 @@ class UsersService {
     }
 
     if (!user.email_to_verify) {
-      throw new AppError('Essa email já foi verificado.');
+      throw new AppError('Esse email já foi verificado.');
     }
 
     user.email = user.email_to_verify;
