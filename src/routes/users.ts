@@ -9,7 +9,8 @@ const usersController = new UsersController();
 routes.post('/register', usersController.create);
 routes.post('/request-password', usersController.requestNewPassword);
 routes.post('/new-password', usersController.newPassword);
-routes.post('/verify-email', usersController.verifyEmail);
+
+routes.get('/verify-email/:token', usersController.verifyEmail);
 
 routes.put(
   '/users/change-password',

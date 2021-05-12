@@ -34,6 +34,14 @@ const populateDatabase = async (connection: Connection) => {
   );
 };
 
+const messageInvalidToken = encodeURIComponent(
+  'OOPS.. Alguma coisa deu errado. 😥'
+);
+const messageUserNotFound = encodeURIComponent('Usúario não encontrado.');
+const messageEmailAlredyVerified = encodeURIComponent(
+  'Essa email já foi verificado.'
+);
+
 describe('Verify Email', () => {
   beforeAll(async () => {
     const connection = await createConnection();
@@ -43,47 +51,35 @@ describe('Verify Email', () => {
   });
 
   it('should return error if an invalid token is sent', async () => {
-    const emptyTokenResponse = await request(app)
-      .post('/api/verify-email')
-      .send({
-        token: '',
-      });
-    const invalidTokenResponse = await request(app)
-      .post('/api/verify-email')
-      .send({
-        token: '123123123123',
-      });
+    const response = await request(app).get(`/api/verify-email/oi`);
 
-    expect(emptyTokenResponse.status).toBe(401);
-    expect(emptyTokenResponse.body.message).toBe('Invalid token.');
-    expect(invalidTokenResponse.status).toBe(401);
-    expect(invalidTokenResponse.body.message).toBe('Invalid token.');
+    expect(response.header.location).toBe(
+      `https://mini-habitos.soft-miner.com/erro?message=${messageInvalidToken}`
+    );
   });
 
   it('should return an error if the user does not exist', async () => {
-    const response = await request(app).post('/api/verify-email').send({
-      token: tokenWithUserIdNonExistent,
-    });
-
-    expect(response.status).toBe(404);
-    expect(response.body.message).toBe('User not found.');
+    const response = await request(app).get(
+      `/api/verify-email/${tokenWithUserIdNonExistent}`
+    );
+    expect(response.header.location).toBe(
+      `https://mini-habitos.soft-miner.com/erro?message=${messageUserNotFound}`
+    );
   });
 
   it('should be possible to verify the email', async () => {
-    const response = await request(app).post('/api/verify-email').send({
-      token,
-    });
+    const response = await request(app).get(`/api/verify-email/${token}`);
 
-    expect(response.status).toBe(200);
-    expect(response.body.message).toBe('Email successfully verified.');
+    expect(response.header.location).toBe(
+      'https://mini-habitos.soft-miner.com/email-verificado'
+    );
   });
 
   it('should return an error if the email has already been verified', async () => {
-    const response = await request(app).post('/api/verify-email').send({
-      token,
-    });
+    const response = await request(app).get(`/api/verify-email/${token}`);
 
-    expect(response.status).toBe(400);
-    expect(response.body.message).toBe('This email was already verified.');
+    expect(response.header.location).toBe(
+      `https://mini-habitos.soft-miner.com/erro?message=${messageEmailAlredyVerified}`
+    );
   });
 });
