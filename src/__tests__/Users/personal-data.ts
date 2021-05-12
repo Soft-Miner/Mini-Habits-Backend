@@ -37,7 +37,7 @@ const getToken = async (connection: Connection) => {
   );
 };
 
-describe('Update personal', () => {
+describe('Update personal data', () => {
   beforeAll(async (done) => {
     const connection = await createConnection();
     await connection.dropDatabase();
