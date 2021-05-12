@@ -16,3 +16,4 @@
 | GET    | [/api/habits](./habits/getAll.md)                               | Pega todos os hábitos.                                                         |
 | PUT    | [/api/users/change-email](./users/change-email.md)              | Atualiza o email do usuário.                                                   |
 | PUT    | [/api/users/change-password](./users/change-password.md)        | Atualiza a senha do usuário.                                                   |
+| GET    | [/api/users/personal-data](./users/getById.md)                  | Pega um usuário pelo seu ID.                                                   |

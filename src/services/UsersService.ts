@@ -274,6 +274,16 @@ class UsersService {
 
     await this.repository.save(user);
   }
+
+  async getById(id: string) {
+    const user = await this.repository.findOne(id);
+
+    if (!user) {
+      throw new AppError('User not found.', 404);
+    }
+
+    return user;
+  }
 }
 
 export default UsersService;
