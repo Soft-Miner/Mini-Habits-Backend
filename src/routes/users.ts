@@ -26,10 +26,6 @@ routes.put(
   usersController.updatePersonalData
 );
 
-routes.get(
-  '/users/personal-data',
-  //verifyJWT(),
-  usersController.getById
-);
+routes.get('/users/personal-data', verifyJWT(), usersController.getById);
 
 export default routes;
