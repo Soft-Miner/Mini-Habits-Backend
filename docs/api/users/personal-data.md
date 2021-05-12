@@ -57,12 +57,6 @@ Atualiza o nome e/ou sobrenome do usuário.
 
     OR
 
-  - **Code:** 401 UNAUTHORIZED
-
-    **Content:** `{ "message": "You cannot change this user." }`
-
-    OR
-
   - **Code:** 400 BAD REQUEST
 
     **Content:** `{ "message": "Something wrong with the request." }`

@@ -1,6 +1,6 @@
 ## **Get User by id**
 
-Pega um usuário pelo seu ID.
+Pega os dados do usúario logado.
 
 - **URL**
 
