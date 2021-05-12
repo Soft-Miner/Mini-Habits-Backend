@@ -76,12 +76,6 @@ Atualiza o email do usuário.
 
     OR
 
-  - **Code:** 401 UNAUTHORIZED
-
-    **Content:** `{ "message": "You cannot change this user." }`
-
-    OR
-
   - **Code:** 404 NOT FOUND
 
     **Content:** `{ "message": "User not found." }`
