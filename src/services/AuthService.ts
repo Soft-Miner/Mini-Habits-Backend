@@ -11,7 +11,7 @@ class AuthService {
     this.repository = getRepository(User);
   }
 
-  async authenticate(email: string, password: string): Promise<string> {
+  async authenticate(email: string, password: string) {
     const user = await this.repository.findOne({ email });
 
     if (!user) {
@@ -32,7 +32,10 @@ class AuthService {
       process.env.JWT_SECRET as string
     );
 
-    return token;
+    return {
+      token,
+      user,
+    };
   }
 }
 
