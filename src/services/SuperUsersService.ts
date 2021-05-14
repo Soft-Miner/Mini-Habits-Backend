@@ -67,6 +67,7 @@ class SuperUsersService {
 
   async refreshToken(refresh_token: string) {
     let decodedToken: RefreshToken;
+
     try {
       decodedToken = jwt.verify(
         refresh_token,

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import * as yup from 'yup';
 import { AppError } from '../errors/AppError';
+import User from '../models/User';
 import AuthService from '../services/AuthService';
 
 class AuthController {
@@ -23,10 +24,20 @@ class AuthController {
     }
 
     try {
-      const token = await new AuthService().authenticate(email, password);
+      const { token, user } = await new AuthService().authenticate(
+        email,
+        password
+      );
 
       response.status(200).json({
         token,
+        user: {
+          id: user.id,
+          name: user.name,
+          lastname: user.lastname,
+          email: user.email,
+          created_at: user.created_at,
+        },
       });
     } catch (error) {
       return _next(error);
