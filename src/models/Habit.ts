@@ -4,6 +4,7 @@ import {
   Entity,
   OneToMany,
   PrimaryColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import HabitChallenge from './HabitChallenge';
@@ -33,7 +34,7 @@ class Habit {
   @Column()
   description: string;
 
-  @Column()
+  @UpdateDateColumn()
   last_modified: Date;
 
   @CreateDateColumn()

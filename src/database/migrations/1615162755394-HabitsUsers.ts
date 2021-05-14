@@ -63,6 +63,7 @@ export class HabitsUsers1615162755394 implements MigrationInterface {
           {
             name: 'last_modified',
             type: 'timestamp',
+            default: 'now()',
           },
           {
             name: 'created_at',

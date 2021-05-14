@@ -21,12 +21,12 @@ export class HabitsChallenges1615161318806 implements MigrationInterface {
             type: 'int',
           },
           {
-            name: 'description',
+            name: 'icon',
             type: 'varchar',
           },
           {
-            name: 'time',
-            type: 'int',
+            name: 'description',
+            type: 'varchar',
           },
           {
             name: 'xp_reward',
@@ -35,6 +35,7 @@ export class HabitsChallenges1615161318806 implements MigrationInterface {
           {
             name: 'last_modified',
             type: 'timestamp',
+            default: 'now()',
           },
           {
             name: 'created_at',
