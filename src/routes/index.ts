@@ -4,6 +4,7 @@ import authRoutes from './auth';
 import superUsersRoutes from './superUsers';
 import habitsRouter from './habits';
 import challengesRouter from './challenges';
+import syncRouter from './sync';
 
 const routes = Router();
 
@@ -12,5 +13,6 @@ routes.use(authRoutes);
 routes.use(superUsersRoutes);
 routes.use(habitsRouter);
 routes.use(challengesRouter);
+routes.use(syncRouter);
 
 export default routes;

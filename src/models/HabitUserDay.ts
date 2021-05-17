@@ -42,10 +42,10 @@ class HabitUserDay {
   completed_day: Date;
 
   @UpdateDateColumn()
-  last_modified: Date;
+  last_modified?: Date;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at?: Date;
 
   constructor() {
     if (!this.id) {
