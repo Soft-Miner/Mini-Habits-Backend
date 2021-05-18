@@ -28,8 +28,6 @@ Altera a senha do usuário.
 
   - **Code:** 200 OK
 
-    **Content:**
-
     **Content:** `{ "message": "Password successfully updated." }`
 
 </br>

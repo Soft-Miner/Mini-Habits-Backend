@@ -1,6 +1,6 @@
 import { EntityManager, MoreThan } from 'typeorm';
 import HabitUser from '../../../models/HabitUser';
-import yup from 'yup';
+import * as yup from 'yup';
 import { AppError } from '../../../errors/AppError';
 
 export const applyHabitsUsersChanges = async (
@@ -9,6 +9,15 @@ export const applyHabitsUsersChanges = async (
   lastPulletAt: number,
   transactionManager: EntityManager
 ) => {
+  await validateFormat(habits_users);
+  await checkIfIsUpdated(lastPulletAt, transactionManager);
+  await checkIfDataIsFromThisUser(habits_users, userId, transactionManager);
+  deleteNonEditableFields(habits_users);
+
+  await transactionManager.save(HabitUser, habits_users);
+};
+
+const validateFormat = async (habits_users: HabitUser[]) => {
   const schema = yup.array().of(
     yup.object().shape({
       id: yup.string().required(),
@@ -31,26 +40,36 @@ export const applyHabitsUsersChanges = async (
   } catch {
     throw new AppError("habits_users's format is incorrect.");
   }
+};
 
+const checkIfIsUpdated = async (
+  lastPulletAt: number,
+  transactionManager: EntityManager
+) => {
+  const newerHabits = await transactionManager.count(HabitUser, {
+    where: {
+      last_modified: MoreThan(
+        new Date(lastPulletAt).toISOString().replace('T', ' ')
+      ),
+    },
+  });
+
+  if (newerHabits) {
+    throw new AppError('You need to pull first.', 409);
+  }
+};
+
+const checkIfDataIsFromThisUser = async (
+  habits_users: HabitUser[],
+  userId: string,
+  transactionManager: EntityManager
+) => {
   for (let i = 0; i < habits_users.length; i++) {
     const item = habits_users[i];
 
     if (item.user_id !== userId) {
       throw new AppError('You cannot change this.', 401);
     }
-
-    delete item.last_modified;
-    delete item.created_at;
-  }
-
-  const newerHabits = await transactionManager.count(HabitUser, {
-    where: {
-      last_modified: MoreThan(new Date(lastPulletAt)),
-    },
-  });
-
-  if (newerHabits) {
-    throw new AppError('You need to pull first.', 409);
   }
 
   const habitsUsersIds = habits_users.map((item) => item.id);
@@ -67,6 +86,11 @@ export const applyHabitsUsersChanges = async (
       throw new AppError('You cannot change this.', 401);
     }
   }
+};
 
-  await transactionManager.save(habits_users);
+const deleteNonEditableFields = (habits_users: HabitUser[]) => {
+  habits_users.forEach((item) => {
+    delete item.created_at;
+    delete item.last_modified;
+  });
 };

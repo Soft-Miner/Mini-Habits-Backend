@@ -8,7 +8,9 @@ export const getHabitsChanges = async (lastPulletAt?: number) => {
   if (lastPulletAt) {
     habits = await habitsRepository.find({
       where: {
-        last_modified: MoreThan(new Date(lastPulletAt)),
+        last_modified: MoreThan(
+          new Date(lastPulletAt).toISOString().replace('T', ' ')
+        ),
       },
     });
   } else {

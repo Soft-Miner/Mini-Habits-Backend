@@ -28,8 +28,6 @@ Retorna um token de acesso.
 
     **Content:**
 
-    **Content:**
-
     ```json
     {
       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMGMyNzdiLWI2ZjEtNDVlMi1hODAyLTBhZTdmY2E4MzAyNiIsInR5cCI6ImFjY2VzcyIsImlhdCI6MTYyMTAzMDMzNX0.MECpCyc47lyZwio3EZsL7riLZTUyg1oceek00Bz3Q4I",

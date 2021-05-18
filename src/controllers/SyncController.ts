@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import yup from 'yup';
+import * as yup from 'yup';
 import { AppError } from '../errors/AppError';
 import SyncService from '../services/SyncService';
 
@@ -38,8 +38,8 @@ class SyncController {
     const { lastPulletAt, changes } = request.body;
 
     const schema = yup.object().shape({
-      lastPulletAt: yup.number().optional(),
-      changes: yup.object(),
+      lastPulletAt: yup.number().required(),
+      changes: yup.object().required(),
     });
 
     try {

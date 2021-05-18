@@ -8,7 +8,9 @@ export const getHabitsChallengesChanges = async (lastPulletAt?: number) => {
   if (lastPulletAt) {
     habitsChallenges = await habitsChallengesRepository.find({
       where: {
-        last_modified: MoreThan(new Date(lastPulletAt)),
+        last_modified: MoreThan(
+          new Date(lastPulletAt).toISOString().replace('T', ' ')
+        ),
       },
     });
   } else {

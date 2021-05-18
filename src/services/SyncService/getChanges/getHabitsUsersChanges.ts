@@ -11,7 +11,9 @@ export const getHabitsUsersChanges = async (
   if (lastPulletAt) {
     habitsUsers = await habitsUsersRepository.find({
       where: {
-        last_modified: MoreThan(new Date(lastPulletAt)),
+        last_modified: MoreThan(
+          new Date(lastPulletAt).toISOString().replace('T', ' ')
+        ),
         user_id: userId,
       },
     });

@@ -15,7 +15,7 @@ export const getHabitsUsersDaysChanges = async (
       .where(
         'habits_users.user_id = :userId AND habits_users_days.last_modified > :lastPulletAt',
         {
-          lastPulletAt: new Date(lastPulletAt).toJSON(),
+          lastPulletAt: new Date(lastPulletAt).toISOString().replace('T', ' '),
           userId,
         }
       )

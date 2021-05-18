@@ -1,6 +1,6 @@
 import { EntityManager, MoreThan } from 'typeorm';
 import HabitUserDay from '../../../models/HabitUserDay';
-import yup from 'yup';
+import * as yup from 'yup';
 import { AppError } from '../../../errors/AppError';
 
 export const applyHabitUsersDaysChanges = async (
@@ -9,6 +9,19 @@ export const applyHabitUsersDaysChanges = async (
   lastPulletAt: number,
   transactionManager: EntityManager
 ) => {
+  await validateFormat(habits_users_days);
+  await checkIfIsUpdated(lastPulletAt, transactionManager);
+  await checkIfDataIsFromThisUser(
+    habits_users_days,
+    userId,
+    transactionManager
+  );
+  deleteNonEditableFields(habits_users_days);
+
+  await transactionManager.save(HabitUserDay, habits_users_days);
+};
+
+const validateFormat = async (habits_users_days: HabitUserDay[]) => {
   const schema = yup.array().of(
     yup.object().shape({
       id: yup.string().required(),
@@ -23,17 +36,30 @@ export const applyHabitUsersDaysChanges = async (
   } catch {
     throw new AppError("habits_users_days's format is incorrect.");
   }
+};
 
+const checkIfIsUpdated = async (
+  lastPulletAt: number,
+  transactionManager: EntityManager
+) => {
   const newerHabitsDays = await transactionManager.count(HabitUserDay, {
     where: {
-      last_modified: MoreThan(new Date(lastPulletAt)),
+      last_modified: MoreThan(
+        new Date(lastPulletAt).toISOString().replace('T', ' ')
+      ),
     },
   });
 
   if (newerHabitsDays) {
     throw new AppError('You need to pull first.', 409);
   }
+};
 
+const checkIfDataIsFromThisUser = async (
+  habits_users_days: HabitUserDay[],
+  userId: string,
+  transactionManager: EntityManager
+) => {
   const habitsUsersDaysIds = habits_users_days.map((item) => item.id);
 
   const savedHabitsUsersDays = await transactionManager.findByIds(
@@ -51,11 +77,11 @@ export const applyHabitUsersDaysChanges = async (
       throw new AppError('You cannot change this.', 401);
     }
   }
+};
 
+const deleteNonEditableFields = (habits_users_days: HabitUserDay[]) => {
   habits_users_days.forEach((item) => {
     delete item.created_at;
     delete item.last_modified;
   });
-
-  await transactionManager.save(habits_users_days);
 };
