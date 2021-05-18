@@ -24,8 +24,6 @@ Solicita a redefinição da senha.
 
   - **Code:** 201 CREATED
 
-    **Content:**
-
     **Content:** `{ "message": "Password recovery email sent to email@example.com." }`
 
 </br>

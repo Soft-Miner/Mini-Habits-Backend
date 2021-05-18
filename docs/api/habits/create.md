@@ -47,8 +47,6 @@ Cria um novo hábito.
 
     **Content:**
 
-    **Content:**
-
     ```json
     {
       "message": "Habit successfully created.",

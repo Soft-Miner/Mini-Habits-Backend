@@ -38,8 +38,6 @@ Adiciona um novo desafio no mini-hábito.
 
     **Content:**
 
-    **Content:**
-
     ```json
     {
       "message": "Challenge successfully created.",
