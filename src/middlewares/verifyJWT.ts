@@ -4,19 +4,25 @@ import { AppError } from '../errors/AppError';
 
 interface tokenPayload {
   id: string;
+  typ: string;
 }
 
 export const verifyJWT = () => {
   return (request: Request, response: Response, _next: NextFunction) => {
-    const token = request.headers['x-access-token'] as string;
+    const authorization = request.headers['authorization'];
+    const token = authorization?.split(' ')[1];
 
     if (!token) throw new AppError('Invalid token.', 401);
 
     jwt.verify(token, process.env.JWT_SECRET as string, (error, decoded) => {
-      if (error) throw new AppError('Invalid token.', 401);
+      const payload = decoded as tokenPayload;
+
+      if (error || payload.typ !== 'access') {
+        throw new AppError('Invalid token.', 401);
+      }
 
       if (decoded) {
-        request.userId = (decoded as tokenPayload).id;
+        request.userId = payload.id;
       }
 
       return _next();

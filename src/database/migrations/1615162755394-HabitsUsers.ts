@@ -25,10 +25,6 @@ export class HabitsUsers1615162755394 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'experience',
-            type: 'int',
-          },
-          {
             name: 'time_sunday',
             type: 'int',
           },
@@ -63,6 +59,7 @@ export class HabitsUsers1615162755394 implements MigrationInterface {
           {
             name: 'last_modified',
             type: 'timestamp',
+            default: 'now()',
           },
           {
             name: 'created_at',

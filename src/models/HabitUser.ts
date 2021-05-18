@@ -6,6 +6,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import Habit from './Habit';
@@ -55,9 +56,6 @@ class HabitUser {
   habitChallenge: HabitChallenge;
 
   @Column()
-  experience: number;
-
-  @Column()
   time_sunday: number;
 
   @Column()
@@ -81,11 +79,11 @@ class HabitUser {
   @Column()
   deleted: boolean;
 
-  @Column()
-  last_modified: Date;
+  @UpdateDateColumn()
+  last_modified?: Date;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at?: Date;
 
   constructor() {
     if (!this.id) {

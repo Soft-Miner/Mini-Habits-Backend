@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import HabitChallenge from './HabitChallenge';
@@ -40,11 +41,11 @@ class HabitUserDay {
   @Column()
   completed_day: Date;
 
-  @Column()
-  last_modified: Date;
+  @UpdateDateColumn()
+  last_modified?: Date;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at?: Date;
 
   constructor() {
     if (!this.id) {
