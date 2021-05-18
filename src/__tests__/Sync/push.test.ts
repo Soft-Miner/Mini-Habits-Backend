@@ -10,12 +10,9 @@ let token: string;
 let userId: string;
 let habitId: string;
 let habitChallengeId: string;
-
-const mockSendEmail = jest.fn();
-
-jest.mock('../../services/SendMailService.ts', () => ({
-  execute: () => mockSendEmail(),
-}));
+const currentDate = new Date();
+const pastDate = new Date().setDate(currentDate.getDate() - 1);
+const futureDate = new Date().setDate(currentDate.getDate() + 1);
 
 const getTokens = async (connection: Connection) => {
   const usersRepository = connection.getRepository(User);
@@ -63,7 +60,7 @@ const createHabit = async (connection: Connection) => {
   habitChallengeId = habit.challenges[0].id;
 };
 
-describe('Update email', () => {
+describe('Push Changes', () => {
   beforeAll(async (done) => {
     const connection = await createConnection();
     await connection.dropDatabase();
@@ -83,12 +80,12 @@ describe('Update email', () => {
     return server && server.close(done);
   });
 
-  it('Não deve retornar erro se habits_users ou habits_users_days não forem informados', async () => {
+  it('should not return an error if habits_users or habits_users_days are not sent', async () => {
     const response = await agent
       .post('/api/push')
       .set('authorization', `Bearer ${token}`)
       .send({
-        lastPulletAt: 1621378824101,
+        lastPulletAt: futureDate,
         changes: {},
       });
 
@@ -96,7 +93,7 @@ describe('Update email', () => {
     expect(response.status).toBe(200);
   });
 
-  it('Deve retornar erro se lastPulledAt ou changes não forem enviados', async () => {
+  it('should return error if lastPulledAt or changes are not sent', async () => {
     const response = await agent
       .post('/api/push')
       .set('authorization', `Bearer ${token}`)
@@ -108,12 +105,12 @@ describe('Update email', () => {
     expect(response.status).toBe(400);
   });
 
-  it('Deve retornar erro se habits_users ou habits_users_days estiverem com formado inválido', async () => {
+  it('should return error if habits_users or habits_users_days have an invalid format', async () => {
     const responseWithHabitsUsersDaysIncorrect = await agent
       .post('/api/push')
       .set('authorization', `Bearer ${token}`)
       .send({
-        lastPulletAt: 1621378824101,
+        lastPulletAt: futureDate,
         changes: {
           habits_users_days: [
             {
@@ -130,7 +127,7 @@ describe('Update email', () => {
       .post('/api/push')
       .set('authorization', `Bearer ${token}`)
       .send({
-        lastPulletAt: 1621378824101,
+        lastPulletAt: futureDate,
         changes: {
           habits_users: [
             {
@@ -161,12 +158,12 @@ describe('Update email', () => {
     expect(responseWithHabitsUsersIncorrect.status).toBe(400);
   });
 
-  it('Deve ser possível sincronizar as alterações', async () => {
+  it('should be possible to synchronize changes', async () => {
     const response = await agent
       .post('/api/push')
       .set('authorization', `Bearer ${token}`)
       .send({
-        lastPulletAt: 1621378824101,
+        lastPulletAt: futureDate,
         changes: {
           habits_users: [
             {
@@ -199,12 +196,12 @@ describe('Update email', () => {
     expect(response.status).toBe(200);
   });
 
-  it('Deve retornar erro se o lastPulledAt não estiver atualizado', async () => {
+  it('should return error if lastPulledAt is not up to date', async () => {
     const response = await agent
       .post('/api/push')
       .set('authorization', `Bearer ${token}`)
       .send({
-        lastPulletAt: 1621371624101,
+        lastPulletAt: pastDate,
         changes: {
           habits_users: [
             {
@@ -229,12 +226,12 @@ describe('Update email', () => {
     expect(response.status).toBe(409);
   });
 
-  it('não deve ser possível alterar dados de outro usuário', async () => {
+  it("should not be possible to change another user's data", async () => {
     const response = await agent
       .post('/api/push')
       .set('authorization', `Bearer ${token}`)
       .send({
-        lastPulletAt: 1621378824101,
+        lastPulletAt: futureDate,
         changes: {
           habits_users: [
             {

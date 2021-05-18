@@ -10,12 +10,9 @@ let server: Server, agent: SuperAgentTest;
 let token: string;
 let userId: string;
 let anotherUserId: string;
-
-const mockSendEmail = jest.fn();
-
-jest.mock('../../services/SendMailService.ts', () => ({
-  execute: () => mockSendEmail(),
-}));
+const currentDate = new Date();
+const pastDate = new Date().setDate(currentDate.getDate() - 1);
+const futureDate = new Date().setDate(currentDate.getDate() + 1);
 
 const getTokens = async (connection: Connection) => {
   const usersRepository = connection.getRepository(User);
@@ -63,8 +60,6 @@ const createHabit = async (connection: Connection) => {
         description: "Tomar um copo d'água",
       },
     ],
-    last_modified: '2021-05-18T22:00:24.101Z',
-    created_at: '2021-05-18T22:00:24.101Z',
   });
 
   await habitsRepository.save(habit);
@@ -83,8 +78,6 @@ const createHabit = async (connection: Connection) => {
     time_friday: 360,
     time_saturday: 360,
     deleted: false,
-    last_modified: '2021-05-18T22:00:24.101Z',
-    created_at: '2021-05-18T22:00:24.101Z',
   });
 
   const anotherHabitUser = habitsUsersRepository.create({
@@ -99,15 +92,13 @@ const createHabit = async (connection: Connection) => {
     time_friday: 360,
     time_saturday: 360,
     deleted: false,
-    last_modified: '2021-05-18T22:00:24.101Z',
-    created_at: '2021-05-18T22:00:24.101Z',
   });
 
   await habitsUsersRepository.save(habitUser);
   await habitsUsersRepository.save(anotherHabitUser);
 };
 
-describe('Update email', () => {
+describe('Pull Changes', () => {
   beforeAll(async (done) => {
     const connection = await createConnection();
     await connection.dropDatabase();
@@ -127,12 +118,12 @@ describe('Update email', () => {
     return server && server.close(done);
   });
 
-  it('deveria retornar nada se já estiver atualizado', async () => {
+  it('should return nothing if it is already updated', async () => {
     const response = await agent
       .post('/api/pull')
       .set('authorization', `Bearer ${token}`)
       .send({
-        lastPulletAt: 1621378824101,
+        lastPulletAt: futureDate,
       });
 
     expect(response.body).toHaveProperty('currentTime');
@@ -144,12 +135,12 @@ describe('Update email', () => {
     expect(response.status).toBe(200);
   });
 
-  it('Deve retornar somente as alterações do usuário e mais recentes que lastPulledAt', async () => {
+  it("should only return the user's changes and more recent than lastPulledAt", async () => {
     const response = await agent
       .post('/api/pull')
       .set('authorization', `Bearer ${token}`)
       .send({
-        lastPulletAt: 1621371624101,
+        lastPulletAt: pastDate,
       });
 
     expect(response.body).toHaveProperty('currentTime');
@@ -161,7 +152,7 @@ describe('Update email', () => {
     expect(response.status).toBe(200);
   });
 
-  it('Deve retornar tudo se o lastPulledAt não for informado', async () => {
+  it('should return everything if lastPulledAt is not informed', async () => {
     const response = await agent
       .post('/api/pull')
       .set('authorization', `Bearer ${token}`);
