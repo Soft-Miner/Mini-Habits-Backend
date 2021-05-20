@@ -22,11 +22,13 @@ class UsersController {
     }
 
     try {
+      const baseUrl = `${request.protocol}://${request.headers.host}`;
       const user = await new UsersService().create(
         name,
         lastname,
         email,
-        password
+        password,
+        baseUrl
       );
 
       return response.status(201).json({
