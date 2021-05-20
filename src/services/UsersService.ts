@@ -71,7 +71,7 @@ class UsersService {
       subject: 'Confirmação de Email',
       variables: {
         name,
-        link: `${baseUrl}/verify-email/${token}`,
+        link: `${baseUrl}/api/verify-email/${token}`,
       },
       path: resolve(__dirname, '../../views/emails/confirmEmail.hbs'),
     });
