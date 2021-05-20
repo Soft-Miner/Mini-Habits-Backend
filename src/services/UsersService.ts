@@ -23,7 +23,8 @@ class UsersService {
     name: string,
     lastname: string,
     email: string,
-    password: string
+    password: string,
+    baseUrl: string
   ): Promise<User> {
     const userWithThisEmail = await this.repository.findOne({ email });
 
@@ -70,7 +71,7 @@ class UsersService {
       subject: 'Confirmação de Email',
       variables: {
         name,
-        link: `https://mini-habitos.soft-miner.com/verificar-email/${token}`,
+        link: `${baseUrl}/verify-email/${token}`,
       },
       path: resolve(__dirname, '../../views/emails/confirmEmail.hbs'),
     });
