@@ -54,7 +54,7 @@ describe('Verify Email', () => {
     const response = await request(app).get(`/api/verify-email/oi`);
 
     expect(response.header.location).toBe(
-      `https://mini-habitos.soft-miner.com/erro?message=${messageInvalidToken}`
+      `${process.env.FRONTEND_URL}/erro?message=${messageInvalidToken}`
     );
   });
 
@@ -63,7 +63,7 @@ describe('Verify Email', () => {
       `/api/verify-email/${tokenWithUserIdNonExistent}`
     );
     expect(response.header.location).toBe(
-      `https://mini-habitos.soft-miner.com/erro?message=${messageUserNotFound}`
+      `${process.env.FRONTEND_URL}/erro?message=${messageUserNotFound}`
     );
   });
 
@@ -71,7 +71,7 @@ describe('Verify Email', () => {
     const response = await request(app).get(`/api/verify-email/${token}`);
 
     expect(response.header.location).toBe(
-      'https://mini-habitos.soft-miner.com/email-verificado'
+      `${process.env.FRONTEND_URL}/email-verificado`
     );
   });
 
@@ -79,7 +79,7 @@ describe('Verify Email', () => {
     const response = await request(app).get(`/api/verify-email/${token}`);
 
     expect(response.header.location).toBe(
-      `https://mini-habitos.soft-miner.com/erro?message=${messageEmailAlredyVerified}`
+      `${process.env.FRONTEND_URL}/erro?message=${messageEmailAlredyVerified}`
     );
   });
 });
