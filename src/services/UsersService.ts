@@ -114,7 +114,7 @@ class UsersService {
       subject: 'Recupere sua senha',
       variables: {
         name: user.name,
-        link: `https://mini-habitos.soft-miner.com/redefinir-senha/${resetRequest.id}/${requestSecret}`,
+        link: `${process.env.FRONTEND_URL}/redefinir-senha/${resetRequest.id}/${requestSecret}`,
       },
       path: resolve(__dirname, '../../views/emails/recoverPassword.hbs'),
     });
@@ -248,7 +248,7 @@ class UsersService {
       subject: 'Confirmação de Email',
       variables: {
         name: user.name,
-        link: `https://mini-habitos.soft-miner.com/verificar-email/${token}`,
+        link: `${process.env.FRONTEND_URL}/verificar-email/${token}`,
       },
       path: resolve(__dirname, '../../views/emails/confirmEmail.hbs'),
     });
