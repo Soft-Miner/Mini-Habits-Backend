@@ -80,14 +80,12 @@ class UsersController {
     try {
       await new UsersService().verifyEmail(token);
 
-      return response.redirect(
-        'https://mini-habitos.soft-miner.com/email-verificado'
-      );
+      return response.redirect(`${process.env.FRONTEND_URL}/email-verificado`);
     } catch (error) {
       const message = encodeURIComponent(error.message);
 
       return response.redirect(
-        `https://mini-habitos.soft-miner.com/erro?message=${message}`
+        `${process.env.FRONTEND_URL}/erro?message=${message}`
       );
     }
   }
