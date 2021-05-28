@@ -1,6 +1,6 @@
 {
   "name": "mini-habits-backend",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "scripts": {
     "dev": "nodemon --files src/server.ts",
