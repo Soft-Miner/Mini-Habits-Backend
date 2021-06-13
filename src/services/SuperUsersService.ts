@@ -95,6 +95,7 @@ class SuperUsersService {
     const access_token = jwt.sign(
       {
         id: superUser.id,
+        typ: 'access',
       },
       process.env.JWT_SECRET_ADMIN as string,
       {
@@ -106,11 +107,12 @@ class SuperUsersService {
     const new_refresh_token = jwt.sign(
       {
         id: superUser.id,
+        typ: 'refresh',
       },
       process.env.JWT_SECRET_ADMIN as string,
       {
         jwtid: uuid(),
-        expiresIn: '1d', // 1 day
+        expiresIn: 60 * 30, // 30 minutes
       }
     );
 
