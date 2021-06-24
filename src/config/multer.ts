@@ -29,7 +29,7 @@ const storageTypes = {
   s3: multerS3({
     s3: new aws.S3(),
     bucket: process.env.BUCKET_NAME as string,
-    contentType: multerS3.AUTO_CONTENT_TYPE,
+    contentType: (req, file, cb) => cb(null, 'image/svg+xml'),
     acl: 'public-read',
     key: (req, file, cb) => {
       crypto.randomBytes(16, (err, hash) => {
