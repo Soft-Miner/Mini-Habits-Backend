@@ -10,6 +10,5 @@ src/database/test/database.test.sqlite
 src/database/database.local.sqlite
 
 .env
-.env.local
 .env.development
 .env.production
